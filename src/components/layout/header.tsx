@@ -84,7 +84,7 @@ export function Header() {
         {/* Desktop Login Button Area - Pushed to the right */}
         <div className="hidden flex-1 items-center justify-end space-x-4 md:flex">
            {/* Add Login/Auth button here later */}
-           <Button variant="ghost">Login</Button>
+           <Button variant="ghost" className="mr-4">Login</Button> {/* Added margin-right */}
         </div>
       </div>
     </header>
