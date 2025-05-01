@@ -16,6 +16,14 @@ export interface YouTubeVideo {
   videoId: string;
 }
 
+// Store mock data in a map for easier lookup
+const mockVideoData: Record<string, { title: string }> = {
+  'YSgk5_WXDfE': { title: 'Stock Market For Beginners | How To Invest (2024)' },
+  'sdMfLkg3MgQ': { title: 'Options Trading for Beginners (The ULTIMATE In-Depth Guide)' },
+  'eynxyoKgpng': { title: 'Technical Analysis for Beginners Part 1' },
+  'DvpaF3g_798': { title: 'Fundamental Analysis Of Stocks For Beginners' },
+};
+
 /**
  * Asynchronously retrieves YouTube video details for a given video ID.
  *
@@ -26,17 +34,20 @@ export async function getYouTubeVideo(videoId: string): Promise<YouTubeVideo> {
   // TODO: Implement this by calling the YouTube Data API or a backend endpoint.
   // For now, return mock data based on the known ID.
 
-  if (videoId === 'YSgk5_WXDfE') { // Example ID used in the course
+  const videoInfo = mockVideoData[videoId];
+
+  if (videoInfo) {
     return {
-      title: 'Stock Market For Beginners | How To Invest (2024)', // Example title
+      title: videoInfo.title,
       url: `https://www.youtube.com/watch?v=${videoId}`,
       videoId: videoId,
     };
   }
 
   // Default mock data for any other ID
+  console.warn(`No mock title found for video ID: ${videoId}. Using default.`);
   return {
-    title: 'Intro to Stock Market (Default)',
+    title: 'Course Video (Default Title)',
     url: `https://www.youtube.com/watch?v=${videoId}`, // Default fallback URL
     videoId: videoId,
   };

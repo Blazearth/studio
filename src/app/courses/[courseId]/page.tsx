@@ -7,14 +7,42 @@ import { ArrowLeft, PlayCircle } from 'lucide-react';
 import { YouTubeVideo, getYouTubeVideo } from '@/services/youtube'; // Import service
 
 // Mock course data - replace with data fetched from Firestore later
-const coursesData: { [key: string]: { title: string; description: string; longDescription: string; videoId: string; imageUrl: string; imageHint: string } } = {
+const coursesData: { [key: string]: { title: string; description: string; longDescription: string; videoId: string; imageUrl: string; imageHint: string; isFree: boolean } } = {
   'intro-stock-market': {
     title: 'Intro to Stock Market',
     description: 'Learn the fundamentals of the stock market, how it works, and basic investment concepts. Perfect for beginners!',
     longDescription: 'This comprehensive introductory course covers the essential concepts you need to understand the stock market. We\'ll explore topics like what stocks are, how exchanges work, different types of orders, market indices, basic analysis techniques, and the risks involved. By the end of this course, you\'ll have a solid foundation to start your investment learning journey.',
     videoId: 'YSgk5_WXDfE', // Example YouTube Video ID (replace with actual)
-    imageUrl: 'https://picsum.photos/800/400',
+    imageUrl: 'https://picsum.photos/800/400?random=1',
     imageHint: 'stock market analysis chart',
+    isFree: true,
+  },
+   'options-trading-basics': {
+    title: 'Options Trading Basics',
+    description: 'Understand call and put options, basic strategies like covered calls, and the risks involved in options trading.',
+    longDescription: 'Dive into the world of options trading. This course explains the core concepts of call and put options, introduces common terminology (strike price, expiry, premium), explores basic strategies like buying calls/puts and covered calls, and highlights the significant risks associated with options.',
+    videoId: 'sdMfLkg3MgQ', // Example YouTube Video ID for Options
+    imageUrl: 'https://picsum.photos/800/400?random=2',
+    imageHint: 'options trading strategy chart',
+    isFree: false,
+  },
+  'technical-analysis-101': {
+    title: 'Technical Analysis 101',
+    description: 'Get started with reading stock charts, identifying trends, support/resistance levels, and common indicators.',
+    longDescription: 'Learn the basics of technical analysis to help you make trading decisions. This course covers how to read candlestick charts, identify uptrends and downtrends, understand support and resistance levels, and introduces popular indicators like Moving Averages and RSI.',
+    videoId: 'eynxyoKgpng', // Example YouTube Video ID for Technical Analysis
+    imageUrl: 'https://picsum.photos/800/400?random=3',
+    imageHint: 'technical analysis stock chart patterns',
+    isFree: true,
+  },
+  'fundamental-analysis-guide': {
+    title: 'Fundamental Analysis Guide',
+    description: 'Learn how to evaluate a company\'s financial health by analyzing balance sheets, income statements, and cash flow.',
+    longDescription: 'Discover how to assess the intrinsic value of a stock through fundamental analysis. This guide explains how to read and interpret key financial statements like the balance sheet, income statement, and cash flow statement. Learn about important financial ratios and metrics used to evaluate a company\'s performance and value.',
+    videoId: 'DvpaF3g_798', // Example YouTube Video ID for Fundamental Analysis
+    imageUrl: 'https://picsum.photos/800/400?random=4',
+    imageHint: 'financial statements analysis report',
+    isFree: false,
   },
 };
 
@@ -71,16 +99,25 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
           <div className="md:col-span-2">
              <Card className="overflow-hidden shadow-lg">
-               <div className="relative h-64 md:h-96 w-full">
-                 <Image
-                  src={course.imageUrl}
-                  alt={course.title}
-                  layout="fill"
-                  objectFit="cover"
-                  priority // Prioritize loading the main course image
-                  data-ai-hint={course.imageHint}
-                />
-               </div>
+                <div className="relative h-64 md:h-96 w-full">
+                    <Image
+                      src={course.imageUrl}
+                      alt={course.title}
+                      layout="fill"
+                      objectFit="cover"
+                      priority // Prioritize loading the main course image
+                      data-ai-hint={course.imageHint}
+                    />
+                     {course.isFree ? (
+                      <span className="absolute top-4 left-4 bg-accent text-accent-foreground px-3 py-1.5 text-sm font-semibold rounded shadow-md">
+                        FREE
+                      </span>
+                    ) : (
+                      <span className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1.5 text-sm font-semibold rounded shadow-md">
+                        PREMIUM
+                      </span>
+                    )}
+                </div>
               <CardHeader>
                 <CardTitle className="text-3xl md:text-4xl font-bold">{course.title}</CardTitle>
                  <CardDescription className="text-lg">{course.description}</CardDescription>
@@ -111,13 +148,26 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                   <CardTitle>Start Learning</CardTitle>
                  </CardHeader>
                  <CardContent>
-                    <p className="text-muted-foreground mb-6">Ready to begin? Click the button below to start the course video and quiz.</p>
-                    <Link href={`/courses/${courseId}/learn`} passHref className="w-full">
-                      <Button size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                        Start Course Now
-                        <PlayCircle className="ml-2 h-5 w-5" />
-                      </Button>
-                    </Link>
+                    {course.isFree ? (
+                         <>
+                            <p className="text-muted-foreground mb-6">Ready to begin? Click the button below to start the course video and quiz.</p>
+                            <Link href={`/courses/${courseId}/learn`} passHref className="w-full">
+                              <Button size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                                Start Course Now
+                                <PlayCircle className="ml-2 h-5 w-5" />
+                              </Button>
+                            </Link>
+                         </>
+                     ) : (
+                         <>
+                            <p className="text-muted-foreground mb-6">This is a premium course. Upgrade to access.</p>
+                            {/* Replace with actual link or action to upgrade */}
+                            <Button size="lg" className="w-full" disabled>
+                                Upgrade to Premium
+                                <PlayCircle className="ml-2 h-5 w-5" />
+                             </Button>
+                         </>
+                     )}
                  </CardContent>
             </Card>
           </div>

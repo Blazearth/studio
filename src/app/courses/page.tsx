@@ -11,9 +11,33 @@ const courses = [
     id: 'intro-stock-market',
     title: 'Intro to Stock Market',
     description: 'Learn the fundamentals of the stock market, how it works, and basic investment concepts. Perfect for beginners!',
-    imageUrl: 'https://picsum.photos/400/200',
+    imageUrl: 'https://picsum.photos/400/200?random=1',
     imageHint: 'stock chart finance graph',
     isFree: true,
+  },
+  {
+    id: 'options-trading-basics',
+    title: 'Options Trading Basics',
+    description: 'Understand call and put options, basic strategies like covered calls, and the risks involved in options trading.',
+    imageUrl: 'https://picsum.photos/400/200?random=2',
+    imageHint: 'options chain trading chart',
+    isFree: false, // Example of a paid course
+  },
+  {
+    id: 'technical-analysis-101',
+    title: 'Technical Analysis 101',
+    description: 'Get started with reading stock charts, identifying trends, support/resistance levels, and common indicators.',
+    imageUrl: 'https://picsum.photos/400/200?random=3',
+    imageHint: 'candlestick chart technical analysis',
+    isFree: true,
+  },
+   {
+    id: 'fundamental-analysis-guide',
+    title: 'Fundamental Analysis Guide',
+    description: 'Learn how to evaluate a company\'s financial health by analyzing balance sheets, income statements, and cash flow.',
+    imageUrl: 'https://picsum.photos/400/200?random=4',
+    imageHint: 'financial report analysis company evaluation',
+    isFree: false, // Example of a paid course
   },
   // Add more courses here in the future
 ];
@@ -34,11 +58,15 @@ export default function CoursesPage() {
                   objectFit="cover"
                   data-ai-hint={course.imageHint}
                 />
-                {course.isFree && (
+                {course.isFree ? (
                   <span className="absolute top-2 left-2 bg-accent text-accent-foreground px-2 py-1 text-xs font-semibold rounded">
                     FREE
                   </span>
-                )}
+                 ) : (
+                  <span className="absolute top-2 left-2 bg-primary text-primary-foreground px-2 py-1 text-xs font-semibold rounded">
+                    PREMIUM
+                  </span>
+                 )}
               </div>
               <CardHeader>
                 <CardTitle className="text-xl">{course.title}</CardTitle>
