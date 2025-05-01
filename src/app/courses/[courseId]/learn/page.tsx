@@ -65,12 +65,12 @@ export default function LearnPage({ params }: { params: { courseId: string } }) 
 
   React.useEffect(() => {
     // Ensure this runs only on the client
-    setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    const handleResize = () => {
+    const updateSize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    updateSize(); // Set initial size
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
   }, []);
 
 
@@ -105,22 +105,23 @@ export default function LearnPage({ params }: { params: { courseId: string } }) 
 
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
-           <Link href={`/courses/${courseId}`} className="mr-6 flex items-center space-x-2 text-muted-foreground hover:text-foreground">
-             <ArrowLeft className="h-5 w-5" />
-             <span>Back to Course Details</span>
-          </Link>
-           <div className="flex-1 flex justify-center font-semibold">
-              {courseData.title}
-           </div>
-           <div className="w-32"> {/* Placeholder to balance header */}</div>
-        </div>
-      </header>
+    // Removed surrounding div and header/footer elements
+    <div className="container mx-auto px-4 py-12"> {/* Changed main to div, added container/padding */}
+      {showConfetti && <Confetti width={windowSize.width} height={windowSize.height} recycle={false} numberOfPieces={500} />}
 
-      <main className="flex-1 container mx-auto px-4 py-12">
-        {showConfetti && <Confetti width={windowSize.width} height={windowSize.height} recycle={false} />}
+       {/* Back to Course Link */}
+        <div className="mb-8">
+           <Link href={`/courses/${courseId}`} passHref>
+             <Button variant="outline" size="sm">
+               <ArrowLeft className="mr-2 h-4 w-4" />
+               Back to Course Details
+             </Button>
+           </Link>
+        </div>
+
+        {/* Page Title */}
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center">{courseData.title} - Learn</h1>
+
 
         <Card className="mb-8 shadow-md">
           <CardHeader>
@@ -128,11 +129,10 @@ export default function LearnPage({ params }: { params: { courseId: string } }) 
             <CardDescription>Watch this video to learn the basics.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="aspect-video w-full max-w-3xl mx-auto bg-muted rounded-lg overflow-hidden">
+            <div className="aspect-video w-full max-w-3xl mx-auto bg-muted rounded-lg overflow-hidden shadow-inner">
               {/* Basic YouTube Embed */}
                <iframe
-                  width="100%"
-                  height="100%"
+                  className="w-full h-full" // Use className for Tailwind
                   src={`https://www.youtube.com/embed/${courseData.videoId}`}
                   title="YouTube video player"
                   frameBorder="0"
@@ -153,33 +153,38 @@ export default function LearnPage({ params }: { params: { courseId: string } }) 
             <form onSubmit={(e) => { e.preventDefault(); handleSubmitQuiz(); }}>
               <div className="space-y-6">
                 {courseData.quiz.map((q, index) => (
-                   <div key={q.id} className={`p-4 border rounded-lg ${quizSubmitted ? (results[q.id] ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') : ''}`}>
+                   <div key={q.id} className={`p-4 border rounded-lg transition-colors duration-300 ${quizSubmitted ? (results[q.id] ? 'border-green-300 bg-green-50/50' : 'border-red-300 bg-red-50/50') : 'border-border'}`}>
                     <p className="font-medium mb-3">{index + 1}. {q.question}</p>
                     <RadioGroup
                       value={answers[q.id]}
                       onValueChange={(value) => handleAnswerChange(q.id, value)}
                       disabled={quizSubmitted}
+                      className="space-y-2" // Add spacing between radio options
                     >
                       {q.options.map((option) => (
-                        <div key={option} className="flex items-center space-x-2">
-                          <RadioGroupItem value={option} id={`${q.id}-${option}`} />
-                          <Label htmlFor={`${q.id}-${option}`} className="cursor-pointer">
+                        <div key={option} className="flex items-center space-x-3"> {/* Increased spacing */}
+                          <RadioGroupItem value={option} id={`${q.id}-${option}`} className="border-primary" />
+                          <Label htmlFor={`${q.id}-${option}`} className={`cursor-pointer flex-1 ${quizSubmitted ? 'text-muted-foreground' : ''}`}>
                              {option}
+                             {/* Feedback icons and text next to the option */}
+                              {quizSubmitted && results[q.id] === false && option === q.correctAnswer && (
+                               <span className="text-xs text-green-600 ml-2 font-normal">(Correct Answer)</span>
+                             )}
+                             {quizSubmitted && results[q.id] === false && option === answers[q.id] && (
+                               <XCircle className="h-4 w-4 text-red-500 inline-block ml-2" />
+                             )}
+                             {quizSubmitted && results[q.id] === true && option === q.correctAnswer && (
+                               <CheckCircle className="h-4 w-4 text-green-500 inline-block ml-2" />
+                             )}
                           </Label>
-                           {quizSubmitted && results[q.id] === false && option === q.correctAnswer && (
-                             <span className="text-xs text-green-600 ml-2">(Correct Answer)</span>
-                           )}
-                           {quizSubmitted && results[q.id] === false && option === answers[q.id] && (
-                             <XCircle className="h-4 w-4 text-red-500 ml-2" />
-                           )}
-                           {quizSubmitted && results[q.id] === true && option === q.correctAnswer && (
-                             <CheckCircle className="h-4 w-4 text-green-500 ml-2" />
-                           )}
                         </div>
                       ))}
                     </RadioGroup>
                     {quizSubmitted && results[q.id] === false && (
                       <p className="text-xs text-red-600 mt-2">Incorrect. The correct answer is: {q.correctAnswer}</p>
+                    )}
+                    {quizSubmitted && results[q.id] === true && (
+                       <p className="text-xs text-green-600 mt-2">Correct!</p>
                     )}
                   </div>
                 ))}
@@ -194,21 +199,21 @@ export default function LearnPage({ params }: { params: { courseId: string } }) 
                {quizSubmitted && (
                  <div className="mt-8 p-6 border rounded-lg text-center bg-secondary/50">
                     <h3 className="text-xl font-semibold mb-2">Quiz Results</h3>
-                    <p className="mb-4">You answered {score} out of {totalQuestions} questions correctly.</p>
+                    <p className="mb-4 text-muted-foreground">You answered {score} out of {totalQuestions} questions correctly.</p>
                     {isPassed ? (
-                      <>
-                         <CheckCircle className="h-12 w-12 text-accent mx-auto mb-4" />
-                         <p className="text-lg font-medium text-accent mb-4">Congratulations! You passed!</p>
+                      <div className="flex flex-col items-center space-y-4">
+                         <CheckCircle className="h-12 w-12 text-accent" />
+                         <p className="text-lg font-medium text-accent">Congratulations! You passed!</p>
                          <Link href={`/courses/${courseId}/certificate`} passHref>
                            <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                              View Your Certificate
+                              Claim Your Certificate
                            </Button>
                          </Link>
-                      </>
+                      </div>
                     ) : (
-                       <>
-                         <XCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
-                         <p className="text-lg font-medium text-destructive mb-4">
+                       <div className="flex flex-col items-center space-y-4">
+                         <XCircle className="h-12 w-12 text-destructive" />
+                         <p className="text-lg font-medium text-destructive">
                              Keep learning! You need to answer all questions correctly to pass.
                          </p>
                          <Button onClick={() => {
@@ -216,25 +221,22 @@ export default function LearnPage({ params }: { params: { courseId: string } }) 
                            setResults({});
                            setQuizSubmitted(false);
                            setShowConfetti(false);
+                           // Scroll to top of quiz section might be helpful here
+                           // e.g., document.getElementById('quiz-card')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                           variant="outline"
                           >
-                            Try Again
+                            Try Quiz Again
                           </Button>
-                       </>
+                       </div>
                     )}
                  </div>
                )}
             </form>
           </CardContent>
         </Card>
-      </main>
-
-      <footer className="py-6 border-t bg-background">
-        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          © {new Date().getFullYear()} StocKaro MVP. All rights reserved.
-        </div>
-      </footer>
-    </div>
+      </div>
+    // Removed Footer
   );
 }
+```

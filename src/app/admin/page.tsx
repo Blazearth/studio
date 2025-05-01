@@ -1,9 +1,14 @@
+
+'use client'; // Add 'use client' because handleExport uses browser APIs
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, MessageSquare, Download } from 'lucide-react';
+import { Users, MessageSquare, Download, Star, ArrowLeft } from 'lucide-react'; // Added Star and ArrowLeft
+import React from 'react'; // Import React for useState etc. if needed in future
+
 
 // IMPORTANT: This is a placeholder page.
 // Real implementation requires:
@@ -27,8 +32,14 @@ const mockFeedback = [
 export default function AdminDashboardPage() {
   // In a real app, check admin authentication here
 
+  // useEffect hook needed if window/document is accessed before hydration
   const handleExport = (data: any[], filename: string) => {
-    // Basic CSV export simulation
+    // Basic CSV export simulation - requires client-side interaction
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      alert("Export function requires a browser environment.");
+      return; // Guard against server-side execution
+    }
+
     if (!data || data.length === 0) {
        alert("No data to export.");
        return;
@@ -40,49 +51,41 @@ export default function AdminDashboardPage() {
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `${filename}.csv`);
-    document.body.appendChild(link);
+    document.body.appendChild(link); // Needs document
     link.click();
-    document.body.removeChild(link);
-    alert(`Simulating export of ${filename}.csv`);
+    document.body.removeChild(link); // Needs document
+    // alert(`Simulating export of ${filename}.csv`); // Can remove alert if download works
   };
 
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Simple Header for Admin */}
-      <header className="sticky top-0 z-50 w-full border-b bg-primary text-primary-foreground">
-        <div className="container flex h-14 items-center">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-             {/* Consider a different logo/indicator for admin */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-              <line x1="12" y1="1" x2="12" y2="23"></line>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-            </svg>
-            <span className="font-bold">StocKaro MVP - Admin</span>
-          </Link>
-          <div className="flex-1 flex justify-end">
-              {/* Add Logout button here later */}
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80">Logout (Placeholder)</Button>
-          </div>
+    // Removed surrounding div and header/footer elements
+    <div className="container mx-auto px-4 py-12"> {/* Changed main to div, added container/padding */}
+       {/* Optional: Back to Home Link */}
+        <div className="mb-8">
+           <Link href="/" passHref>
+             <Button variant="outline" size="sm">
+               <ArrowLeft className="mr-2 h-4 w-4" />
+               Back to Home
+             </Button>
+           </Link>
         </div>
-      </header>
 
-      <main className="flex-1 container mx-auto px-4 py-12">
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
 
          <Tabs defaultValue="completions" className="w-full">
-           <TabsList className="grid w-full grid-cols-2">
+           <TabsList className="grid w-full grid-cols-2 mb-6"> {/* Added margin-bottom */}
              <TabsTrigger value="completions">
                <Users className="mr-2 h-4 w-4" /> Course Completions
              </TabsTrigger>
              <TabsTrigger value="feedback">
-               <MessageSquare className="mr-2 h-4 w-4" /> Feedback Submissions
+               <MessageSquare className="mr-2 h-4 w-4" /> Feedback / Contact
              </TabsTrigger>
            </TabsList>
 
            <TabsContent value="completions">
-              <Card>
-                 <CardHeader className="flex flex-row items-center justify-between">
+              <Card className="shadow-md"> {/* Added shadow */}
+                 <CardHeader className="flex flex-row items-center justify-between pb-4"> {/* Adjusted padding */}
                     <div>
                       <CardTitle>Course Completions</CardTitle>
                       <CardDescription>Users who completed the 'Intro to Stock Market' quiz.</CardDescription>
@@ -105,7 +108,7 @@ export default function AdminDashboardPage() {
                       {mockCompletedUsers.length > 0 ? (
                         mockCompletedUsers.map((user) => (
                           <TableRow key={user.id}>
-                            <TableCell>{user.name}</TableCell>
+                            <TableCell className="font-medium">{user.name}</TableCell> {/* Added font-medium */}
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.course}</TableCell>
                             <TableCell className="text-right">{user.completedAt}</TableCell>
@@ -113,7 +116,9 @@ export default function AdminDashboardPage() {
                         ))
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={4} className="text-center text-muted-foreground">No completions yet.</TableCell>
+                          <TableCell colSpan={4} className="h-24 text-center text-muted-foreground"> {/* Added height */}
+                            No completions yet.
+                          </TableCell>
                         </TableRow>
                       )}
                     </TableBody>
@@ -123,11 +128,11 @@ export default function AdminDashboardPage() {
            </TabsContent>
 
            <TabsContent value="feedback">
-             <Card>
-               <CardHeader className="flex flex-row items-center justify-between">
+             <Card className="shadow-md"> {/* Added shadow */}
+               <CardHeader className="flex flex-row items-center justify-between pb-4"> {/* Adjusted padding */}
                  <div>
-                   <CardTitle>Feedback Submissions</CardTitle>
-                   <CardDescription>User feedback and suggestions.</CardDescription>
+                   <CardTitle>Feedback & Contact Submissions</CardTitle> {/* Updated title */}
+                   <CardDescription>User feedback, suggestions, and contact messages.</CardDescription> {/* Updated description */}
                   </div>
                   <Button variant="outline" size="sm" onClick={() => handleExport(mockFeedback, 'feedback_submissions')}>
                      <Download className="mr-2 h-4 w-4" /> Export Feedback
@@ -140,7 +145,7 @@ export default function AdminDashboardPage() {
                        <TableHead>Name</TableHead>
                        <TableHead>Email</TableHead>
                        <TableHead>Rating</TableHead>
-                       <TableHead>Suggestion</TableHead>
+                       <TableHead>Message/Suggestion</TableHead> {/* Updated header */}
                        <TableHead className="text-right">Submitted At</TableHead>
                      </TableRow>
                    </TableHeader>
@@ -148,14 +153,19 @@ export default function AdminDashboardPage() {
                       {mockFeedback.length > 0 ? (
                         mockFeedback.map((fb) => (
                           <TableRow key={fb.id}>
-                            <TableCell>{fb.name}</TableCell>
+                            <TableCell className="font-medium">{fb.name}</TableCell> {/* Added font-medium */}
                             <TableCell>{fb.email}</TableCell>
                              <TableCell>
-                               <div className="flex">
+                              {fb.rating ? (
+                               <div className="flex items-center">
                                   {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={`h-4 w-4 ${i < fb.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground'}`} />
+                                    <Star key={i} className={`h-4 w-4 ${i < fb.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground/50'}`} />
                                   ))}
+                                   <span className="ml-2 text-xs text-muted-foreground">({fb.rating}/5)</span>
                                </div>
+                                ) : (
+                                  <span className="text-xs text-muted-foreground italic">N/A</span>
+                                )}
                              </TableCell>
                             <TableCell className="max-w-xs truncate">{fb.suggestion}</TableCell>
                             <TableCell className="text-right">{fb.submittedAt}</TableCell>
@@ -163,7 +173,9 @@ export default function AdminDashboardPage() {
                         ))
                       ) : (
                          <TableRow>
-                           <TableCell colSpan={5} className="text-center text-muted-foreground">No feedback submitted yet.</TableCell>
+                           <TableCell colSpan={5} className="h-24 text-center text-muted-foreground"> {/* Added height */}
+                             No feedback or messages submitted yet.
+                           </TableCell>
                          </TableRow>
                       )}
                    </TableBody>
@@ -173,14 +185,8 @@ export default function AdminDashboardPage() {
            </TabsContent>
          </Tabs>
 
-      </main>
-
-      {/* Simple Footer for Admin */}
-      <footer className="py-6 border-t bg-muted/50">
-        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          Admin Panel - StocKaro MVP © {new Date().getFullYear()}
-        </div>
-      </footer>
-    </div>
+      </div>
+    // Removed Footer
   );
 }
+```

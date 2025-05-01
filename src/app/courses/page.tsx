@@ -19,29 +19,8 @@ const courses = [
 
 export default function CoursesPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-primary">
-              <line x1="12" y1="1" x2="12" y2="23"></line>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-            </svg>
-            <span className="font-bold">StocKaro MVP</span>
-          </Link>
-           <nav className="flex flex-1 items-center justify-end space-x-4">
-            <Link href="/courses">
-              <Button variant="ghost" className="font-semibold text-primary">Courses</Button>
-            </Link>
-            <Link href="/feedback">
-              <Button variant="ghost">Feedback</Button>
-            </Link>
-             {/* Add Login/Auth button here later */}
-          </nav>
-        </div>
-      </header>
-
-      <main className="flex-1 container mx-auto px-4 py-12 md:py-16">
+    // Removed surrounding div and header/footer elements
+    <div className="container mx-auto px-4 py-12 md:py-16"> {/* Changed main to div, added container/padding */}
         <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">Available Courses</h1>
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course) => (
@@ -80,18 +59,13 @@ export default function CoursesPage() {
             </Card>
           ))}
            {/* Placeholder for future courses */}
-           <Card className="flex flex-col items-center justify-center border-dashed border-2 text-muted-foreground p-8 h-full">
+           <Card className="flex flex-col items-center justify-center border-dashed border-2 text-muted-foreground p-8 h-full min-h-[300px]"> {/* Added min-height */}
              <PlayCircle className="h-12 w-12 mb-4" />
              <p className="text-center font-medium">More courses coming soon!</p>
            </Card>
         </div>
-      </main>
-
-       <footer className="py-6 border-t bg-background">
-        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          © {new Date().getFullYear()} StocKaro MVP. All rights reserved.
-        </div>
-      </footer>
-    </div>
+      </div>
+    // Removed Footer
   );
 }
+```

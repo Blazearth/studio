@@ -42,7 +42,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
 
   if (!course) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-var(--header-height)-var(--footer-height))] text-center container mx-auto px-4 py-12"> {/* Adjusted height and padding */}
         <h1 className="text-2xl font-bold mb-4">Course Not Found</h1>
         <p className="text-muted-foreground mb-8">The course you are looking for does not exist.</p>
         <Link href="/courses" passHref>
@@ -55,20 +55,18 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
   }
 
   return (
-     <div className="flex flex-col min-h-screen">
-       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
-          <Link href="/courses" className="mr-6 flex items-center space-x-2 text-muted-foreground hover:text-foreground">
-             <ArrowLeft className="h-5 w-5" />
-             <span>Back to Courses</span>
-          </Link>
-           <div className="flex-1 flex justify-end">
-             {/* Placeholder for potential future actions like bookmark */}
-           </div>
+     // Removed surrounding div and header/footer elements
+     <div className="container mx-auto px-4 py-12 md:py-16"> {/* Changed main to div, added container/padding */}
+        {/* Back to Courses Link - moved above grid */}
+        <div className="mb-8">
+           <Link href="/courses" passHref>
+             <Button variant="outline" size="sm">
+               <ArrowLeft className="mr-2 h-4 w-4" />
+               Back to Courses
+             </Button>
+           </Link>
         </div>
-      </header>
 
-      <main className="flex-1 container mx-auto px-4 py-12 md:py-16">
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
           <div className="md:col-span-2">
              <Card className="overflow-hidden shadow-lg">
@@ -106,7 +104,8 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
           </div>
 
           <div className="md:col-span-1">
-             <Card className="sticky top-20 shadow-lg"> {/* Sticky card for actions */}
+             {/* Adjusted top position for sticky card */}
+             <Card className="sticky top-[calc(theme(spacing.14)_+_theme(spacing.8))] shadow-lg">
                 <CardHeader>
                   <CardTitle>Start Learning</CardTitle>
                  </CardHeader>
@@ -122,14 +121,8 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
             </Card>
           </div>
         </div>
-      </main>
-
-      <footer className="py-6 border-t bg-background">
-        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          © {new Date().getFullYear()} StocKaro MVP. All rights reserved.
-        </div>
-      </footer>
-    </div>
+      </div>
+     // Removed Footer
   );
 }
 
@@ -140,3 +133,4 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
 //     courseId,
 //   }));
 // }
+```
