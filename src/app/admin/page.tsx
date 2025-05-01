@@ -80,7 +80,13 @@ export default function AdminDashboardPage() {
 
    // Helper function to format currency
    const formatCurrency = (value: number) => {
-     return value.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+     // Use a default locale like 'en-US' if 'en-IN' causes issues, or handle potential errors.
+     try {
+         return value.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+     } catch (e) {
+         console.warn("Locale 'en-IN' not supported, falling back to 'en-US'.", e);
+         return value.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Fallback
+     }
    };
 
 
@@ -130,7 +136,7 @@ export default function AdminDashboardPage() {
                       {mockCompletedUsers.length > 0 ? (
                         mockCompletedUsers.map((user) => (
                           <TableRow key={user.id}>
-                            <TableCell className="font-medium">{user.name}</TableCell> {/* Added font-medium */}
+                            <TableCell className="font-medium">{user.name}</TableCell>
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.course}</TableCell>
                             <TableCell className="text-right">{user.completedAt}</TableCell>
@@ -175,13 +181,13 @@ export default function AdminDashboardPage() {
                       {mockFeedback.length > 0 ? (
                         mockFeedback.map((fb) => (
                           <TableRow key={fb.id}>
-                            <TableCell className="font-medium">{fb.name}</TableCell> {/* Added font-medium */}
+                            <TableCell className="font-medium">{fb.name}</TableCell>
                             <TableCell>{fb.email}</TableCell>
                              <TableCell>
                               {fb.rating ? (
                                <div className="flex items-center">
                                   {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={`h-4 w-4 ${i < fb.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground/50'}`} /> // Use accent color (Butter Yellow)
+                                    <Star key={i} className={`h-4 w-4 ${i < fb.rating ? 'text-[hsl(var(--accent))] fill-[hsl(var(--accent))]' : 'text-muted-foreground/50'}`} />
                                   ))}
                                    <span className="ml-2 text-xs text-muted-foreground">({fb.rating}/5)</span>
                                </div>
@@ -237,7 +243,7 @@ export default function AdminDashboardPage() {
                                          <TableRow key={entry.userId}>
                                              <TableCell className="font-medium">{index + 1}</TableCell>
                                              <TableCell>{entry.userId}</TableCell>
-                                             <TableCell className={`text-right font-semibold ${entry.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}> {/* Consider using Dill Green */}
+                                             <TableCell className={`text-right font-semibold ${entry.pnl >= 0 ? 'text-[hsl(var(--secondary-accent))]' : 'text-[hsl(var(--destructive))]'}`}>
                                                   {formatCurrency(entry.pnl)}
                                              </TableCell>
                                               {/* <TableCell className="text-right">
