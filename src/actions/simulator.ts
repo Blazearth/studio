@@ -189,4 +189,3 @@ export async function fetchLeaderboardDataAction(limit: number = 5): Promise<{ u
     return [];
   }
 }
-```

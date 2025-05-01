@@ -225,4 +225,3 @@ export default function TradeForm({ assets, onSubmit, isLoading }: TradeFormProp
     </Form>
   );
 }
-```
