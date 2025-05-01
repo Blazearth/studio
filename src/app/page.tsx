@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { ArrowRight, MessageCircle } from 'lucide-react';
+import stockMarketImage from '@/assets/stockaro logo.png';
 
 export default function Home() {
   const mentorshipLink = "https://wa.me/9451807965"; // Replace with your WhatsApp or Typeform link
@@ -37,14 +38,14 @@ export default function Home() {
             </div>
           </div>
           <div className="hidden md:block">
-             <Image
-                src="https://picsum.photos/600/400?random=10"
-                alt="Stock Market Learning Illustration"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-xl"
-                data-ai-hint="stock market education finance graph laptop" // Updated hint
-              />
+            <Image
+              src={stockMarketImage}
+              alt="Stockaro Logo"
+              width={400}
+              height={300}
+              className="rounded-lg shadow-xl object-contain max-w-[400px] mx-auto"
+              priority
+            />
           </div>
         </div>
 
