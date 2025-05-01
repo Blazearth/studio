@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, MessageSquare, Download, Star, ArrowLeft, TrendingUp } from 'lucide-react'; // Added Star, ArrowLeft, TrendingUp
 import React, { useState, useEffect } from 'react'; // Import React for useState etc. if needed in future
 import { fetchLeaderboardDataAction } from '@/actions/simulator'; // Import leaderboard fetch action
+import { cn } from '@/lib/utils'; // Import cn utility
 
 // IMPORTANT: This is a placeholder page.
 // Real implementation requires:
@@ -173,7 +174,7 @@ export default function AdminDashboardPage() {
                        <TableHead>Name</TableHead>
                        <TableHead>Email</TableHead>
                        <TableHead>Rating</TableHead>
-                       <TableHead>Message/Suggestion</TableHead> {/* Updated header */}
+                       <TableHead>Message/Suggestion</TableHead>{/* Updated header */}
                        <TableHead className="text-right">Submitted At</TableHead>
                      </TableRow>
                    </TableHeader>
@@ -187,7 +188,10 @@ export default function AdminDashboardPage() {
                               {fb.rating ? (
                                <div className="flex items-center">
                                   {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={`h-4 w-4 ${i < fb.rating ? 'text-[hsl(var(--accent))] fill-[hsl(var(--accent))]' : 'text-muted-foreground/50'}`} />
+                                    <Star key={i} className={cn(
+                                        'h-4 w-4',
+                                        i < fb.rating ? 'text-accent fill-accent' : 'text-muted-foreground/50'
+                                      )} />
                                   ))}
                                    <span className="ml-2 text-xs text-muted-foreground">({fb.rating}/5)</span>
                                </div>
@@ -243,7 +247,10 @@ export default function AdminDashboardPage() {
                                          <TableRow key={entry.userId}>
                                              <TableCell className="font-medium">{index + 1}</TableCell>
                                              <TableCell>{entry.userId}</TableCell>
-                                             <TableCell className={`text-right font-semibold ${entry.pnl >= 0 ? 'text-[hsl(var(--secondary-accent))]' : 'text-[hsl(var(--destructive))]'}`}>
+                                             <TableCell className={cn(
+                                                'text-right font-semibold',
+                                                entry.pnl >= 0 ? 'text-green-600' : 'text-red-600'
+                                                )}>
                                                   {formatCurrency(entry.pnl)}
                                              </TableCell>
                                               {/* <TableCell className="text-right">
@@ -271,3 +278,5 @@ export default function AdminDashboardPage() {
     // Removed Footer
   );
 }
+
+    
