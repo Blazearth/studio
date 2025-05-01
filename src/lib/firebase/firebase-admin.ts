@@ -1,6 +1,6 @@
 
 import * as admin from 'firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore'; // Specific import for FieldValue
+// Removed direct import: import { FieldValue } from 'firebase-admin/firestore';
 
 // Ensure Firebase Admin is initialized only once
 if (!admin.apps.length) {
@@ -37,6 +37,8 @@ if (!admin.apps.length) {
 
 export const auth = admin.auth();
 export const firestore = admin.firestore();
+// Access FieldValue from the initialized admin object
+const FieldValue = admin.firestore.FieldValue;
 export { FieldValue }; // Re-export FieldValue
 // export const storage = admin.storage(); // Uncomment if you need storage
 
