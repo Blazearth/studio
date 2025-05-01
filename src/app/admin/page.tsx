@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, MessageSquare, Download, Star, ArrowLeft } from 'lucide-react'; // Added Star and ArrowLeft
-import React from 'react'; // Import React for useState etc. if needed in future
-
+import { Users, MessageSquare, Download, Star, ArrowLeft, TrendingUp } from 'lucide-react'; // Added Star, ArrowLeft, TrendingUp
+import React, { useState, useEffect } from 'react'; // Import React for useState etc. if needed in future
+import { fetchLeaderboardDataAction } from '@/actions/simulator'; // Import leaderboard fetch action
 
 // IMPORTANT: This is a placeholder page.
 // Real implementation requires:
@@ -30,6 +30,27 @@ const mockFeedback = [
 
 
 export default function AdminDashboardPage() {
+    const [leaderboardData, setLeaderboardData] = useState<{ userId: string; pnl: number }[]>([]);
+    const [isLoadingLeaderboard, setIsLoadingLeaderboard] = useState(true);
+
+    useEffect(() => {
+        // Fetch leaderboard data
+        const loadLeaderboard = async () => {
+            setIsLoadingLeaderboard(true);
+            try {
+                const leaders = await fetchLeaderboardDataAction(10); // Fetch top 10 for admin view
+                setLeaderboardData(leaders);
+            } catch (error) {
+                console.error("Error fetching leaderboard for admin:", error);
+                // Handle error display if necessary
+            } finally {
+                setIsLoadingLeaderboard(false);
+            }
+        };
+        loadLeaderboard();
+    }, []);
+
+
   // In a real app, check admin authentication here
 
   // useEffect hook needed if window/document is accessed before hydration
@@ -57,29 +78,30 @@ export default function AdminDashboardPage() {
     // alert(`Simulating export of ${filename}.csv`); // Can remove alert if download works
   };
 
+   // Helper function to format currency
+   const formatCurrency = (value: number) => {
+     return value.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+   };
+
 
   return (
     // Removed surrounding div and header/footer elements
     <div className="container mx-auto px-4 py-12"> {/* Changed main to div, added container/padding */}
-       {/* Optional: Back to Home Link */}
-        <div className="mb-8">
-           <Link href="/" passHref>
-             <Button variant="outline" size="sm">
-               <ArrowLeft className="mr-2 h-4 w-4" />
-               Back to Home
-             </Button>
-           </Link>
-        </div>
+       {/* Back to Home Link is removed as Admin is now in header nav */}
 
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
 
          <Tabs defaultValue="completions" className="w-full">
-           <TabsList className="grid w-full grid-cols-2 mb-6"> {/* Added margin-bottom */}
+           {/* Updated TabsList to include Leaderboard */}
+           <TabsList className="grid w-full grid-cols-3 mb-6">
              <TabsTrigger value="completions">
                <Users className="mr-2 h-4 w-4" /> Course Completions
              </TabsTrigger>
              <TabsTrigger value="feedback">
                <MessageSquare className="mr-2 h-4 w-4" /> Feedback / Contact
+             </TabsTrigger>
+              <TabsTrigger value="leaderboard">
+               <TrendingUp className="mr-2 h-4 w-4" /> Simulator Leaderboard
              </TabsTrigger>
            </TabsList>
 
@@ -183,6 +205,60 @@ export default function AdminDashboardPage() {
                </CardContent>
              </Card>
            </TabsContent>
+
+            {/* Simulator Leaderboard Tab Content */}
+            <TabsContent value="leaderboard">
+                 <Card className="shadow-md">
+                     <CardHeader className="flex flex-row items-center justify-between pb-4">
+                         <div>
+                             <CardTitle>Simulator Leaderboard</CardTitle>
+                             <CardDescription>Top users based on total simulated Profit & Loss.</CardDescription>
+                         </div>
+                         <Button variant="outline" size="sm" onClick={() => handleExport(leaderboardData, 'simulator_leaderboard')}>
+                             <Download className="mr-2 h-4 w-4" /> Export Leaderboard
+                         </Button>
+                     </CardHeader>
+                     <CardContent>
+                         <Table>
+                             <TableHeader>
+                                 <TableRow>
+                                     <TableHead className="w-[80px]">Rank</TableHead>
+                                     <TableHead>User ID</TableHead>
+                                     <TableHead className="text-right">Total P&L</TableHead>
+                                      {/* Add more columns if needed, e.g., Ban button */}
+                                     {/* <TableHead className="text-right">Actions</TableHead> */}
+                                 </TableRow>
+                             </TableHeader>
+                             <TableBody>
+                                 {isLoadingLeaderboard ? (
+                                     <TableRow><TableCell colSpan={3} className="h-24 text-center">Loading leaderboard...</TableCell></TableRow>
+                                 ) : leaderboardData.length > 0 ? (
+                                     leaderboardData.map((entry, index) => (
+                                         <TableRow key={entry.userId}>
+                                             <TableCell className="font-medium">{index + 1}</TableCell>
+                                             <TableCell>{entry.userId}</TableCell>
+                                             <TableCell className={`text-right font-semibold ${entry.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                  {formatCurrency(entry.pnl)}
+                                             </TableCell>
+                                              {/* <TableCell className="text-right">
+                                                  <Button variant="destructive" size="sm" onClick={() => alert(`Ban user ${entry.userId}? (Not implemented)`)}>Ban</Button>
+                                              </TableCell> */}
+                                         </TableRow>
+                                     ))
+                                 ) : (
+                                     <TableRow>
+                                         <TableCell colSpan={3} className="h-24 text-center text-muted-foreground">
+                                             No leaderboard data available yet.
+                                         </TableCell>
+                                     </TableRow>
+                                 )}
+                             </TableBody>
+                         </Table>
+                     </CardContent>
+                 </Card>
+             </TabsContent>
+
+
          </Tabs>
 
       </div>

@@ -11,7 +11,9 @@ import { cn } from '@/lib/utils';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/courses', label: 'Courses' },
-  { href: '/feedback', label: 'Contact' }, // Renamed Feedback to Contact
+  { href: '/simulator', label: 'Simulator' }, // Added Simulator link
+  { href: '/feedback', label: 'Contact' },
+  // Removed Admin link from public navigation
 ];
 
 export function Header() {
@@ -25,7 +27,7 @@ export function Header() {
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <DollarSign className="h-6 w-6 text-primary" />
             <span className="font-bold sm:inline-block">
-              StocKaro {/* Changed from StocKaro MVP */}
+              StocKaro
             </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -41,6 +43,18 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+             {/* Optional: Add Admin link conditionally or based on user role */}
+             {/* {userIsAdmin && ( */}
+                <Link
+                    href="/admin" // Link to the admin page
+                    className={cn(
+                        "transition-colors hover:text-foreground/80",
+                        pathname === "/admin" ? "text-foreground" : "text-foreground/60"
+                    )}
+                >
+                    Admin
+                </Link>
+             {/* )} */}
           </nav>
         </div>
 
@@ -48,7 +62,7 @@ export function Header() {
         <div className="flex flex-1 items-center justify-between space-x-2 md:hidden">
            <Link href="/" className="flex items-center space-x-2">
              <DollarSign className="h-6 w-6 text-primary" />
-             <span className="font-bold">StocKaro</span> {/* Changed from StocKaro MVP */}
+             <span className="font-bold">StocKaro</span>
            </Link>
           <Sheet>
             <SheetTrigger asChild>
@@ -71,6 +85,17 @@ export function Header() {
                      {link.label}
                    </Link>
                  ))}
+                  {/* Add Admin link in mobile menu */}
+                  <Link
+                      href="/admin"
+                      className={cn(
+                         "px-4 py-2 text-lg font-medium transition-colors hover:text-foreground/80",
+                         pathname === "/admin" ? "text-foreground bg-muted" : "text-foreground/60"
+                      )}
+                     >
+                       Admin
+                     </Link>
+
                  {/* Add Login/Auth button here in mobile menu later */}
                  <div className="px-4 pt-4">
                     <Button variant="ghost" className="w-full justify-start">Login</Button>
@@ -84,10 +109,10 @@ export function Header() {
         {/* Desktop Login Button Area - Pushed to the right */}
         <div className="hidden flex-1 items-center justify-end space-x-4 md:flex">
            {/* Add Login/Auth button here later */}
-           <Button variant="ghost" className="mr-4">Login</Button> {/* Added margin-right */}
+           <Button variant="ghost" className="mr-4">Login</Button>
         </div>
       </div>
     </header>
   );
 }
-
+```
