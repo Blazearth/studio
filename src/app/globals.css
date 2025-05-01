@@ -3,78 +3,79 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  /* Font family will be set in layout.tsx */
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 207 68% 53%; /* Updated: #3498db */
-    --primary-foreground: 0 0% 100%; /* Updated for better contrast */
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 145 63% 49%; /* Updated: #2ecc71 */
-    --accent-foreground: 0 0% 100%; /* Updated for better contrast */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 207 68% 53%; /* Updated to match primary */
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    /* Light Theme (Adjusted for contrast with new accents) */
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 6%; /* Near Black */
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 0 0% 6%; /* Near Black */
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 0 0% 6%; /* Near Black */
+    --primary: 197 100% 47%; /* Electric Blue */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 0 0% 96.1%; /* Light Gray */
+    --secondary-foreground: 0 0% 9%; /* Dark Gray */
+    --muted: 0 0% 90%; /* Slightly darker gray for subtle elements */
+    --muted-foreground: 0 0% 43%; /* #6D6D6D - Soft Gray */
+    --accent: 157 58% 53%; /* Lime Green */
+    --accent-foreground: 0 0% 6%; /* Dark text for green bg */
+    --destructive: 0 100% 66%; /* #FF5252 */
+    --destructive-foreground: 0 0% 100%; /* White */
+    --border: 0 0% 89.8%; /* Light border */
+    --input: 0 0% 89.8%; /* Light input bg */
+    --ring: 197 100% 47%; /* Electric Blue for focus rings */
+    --chart-1: 197 100% 47%; /* Primary */
+    --chart-2: 157 58% 53%; /* Accent */
+    --chart-3: 210 40% 50%; /* Muted Blue */
+    --chart-4: 30 90% 60%; /* Orange */
+    --chart-5: 270 60% 65%; /* Purple */
+    --radius: 1rem; /* 16px base, adjust in tailwind.config for lg/xl */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 207 68% 53%; /* Updated */
+    --sidebar-primary: 197 100% 47%; /* Updated */
     --sidebar-primary-foreground: 0 0% 100%; /* Updated */
-    --sidebar-accent: 145 63% 49%; /* Updated */
-    --sidebar-accent-foreground: 0 0% 100%; /* Updated */
+    --sidebar-accent: 157 58% 53%; /* Updated */
+    --sidebar-accent-foreground: 0 0% 6%; /* Updated */
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 207 68% 53%; /* Updated */
+    --sidebar-ring: 197 100% 47%; /* Updated */
   }
   .dark {
-    --background: 240 10% 3.9%; /* Adjusted for dark mode */
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 207 68% 53%; /* Updated: #3498db */
-    --primary-foreground: 0 0% 100%; /* Updated */
-    --secondary: 240 3.7% 15.9%; /* Adjusted */
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%; /* Adjusted */
-    --accent: 145 63% 49%; /* Updated: #2ecc71 */
-    --accent-foreground: 0 0% 100%; /* Updated */
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 207 68% 53%; /* Updated */
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 10% 3.9%; /* Adjusted */
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 207 68% 53%; /* Updated */
+    --background: 0 0% 6%; /* #0f0f0f */
+    --foreground: 0 0% 100%; /* #FFFFFF */
+    --card: 0 0% 10%; /* #1A1A1A */
+    --card-foreground: 0 0% 100%; /* #FFFFFF */
+    --popover: 0 0% 10%; /* #1A1A1A */
+    --popover-foreground: 0 0% 100%; /* #FFFFFF */
+    --primary: 197 100% 47%; /* #00AEEF */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 0 0% 13%; /* #212121 - Darker Gray */
+    --secondary-foreground: 0 0% 90%; /* Light Gray */
+    --muted: 0 0% 15%; /* #262626 - For muted backgrounds like toasts */
+    --muted-foreground: 0 0% 69%; /* #B0B0B0 - Body Text */
+    --accent: 157 58% 53%; /* #3FCF8E - Lime Green */
+    --accent-foreground: 0 0% 6%; /* Dark text for green bg */
+    --destructive: 0 100% 66%; /* #FF5252 */
+    --destructive-foreground: 0 0% 100%; /* White */
+    --border: 0 0% 20%; /* #333333 - Darker border */
+    --input: 0 0% 11.4%; /* #1d1d1d - Input background */
+    --ring: 197 100% 47%; /* Electric Blue for focus rings */
+    --chart-1: 197 100% 47%; /* Primary */
+    --chart-2: 157 58% 53%; /* Accent */
+    --chart-3: 210 60% 65%; /* Lighter Blue */
+    --chart-4: 30 90% 70%; /* Lighter Orange */
+    --chart-5: 270 70% 75%; /* Lighter Purple */
+    --sidebar-background: 0 0% 10%; /* #1A1A1A */
+    --sidebar-foreground: 0 0% 90%; /* Light Gray */
+    --sidebar-primary: 197 100% 47%; /* Updated */
     --sidebar-primary-foreground: 0 0% 100%; /* Updated */
-    --sidebar-accent: 145 63% 49%; /* Updated */
-    --sidebar-accent-foreground: 0 0% 100%; /* Updated */
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 207 68% 53%; /* Updated */
+    --sidebar-accent: 157 58% 53%; /* Updated */
+    --sidebar-accent-foreground: 0 0% 6%; /* Updated */
+    --sidebar-border: 0 0% 20%; /* Updated */
+    --sidebar-ring: 197 100% 47%; /* Updated */
   }
 }
 
@@ -84,5 +85,84 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    letter-spacing: 0.5px; /* Body letter spacing */
+    @apply antialiased; /* Ensure fonts are smooth */
   }
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.2px; /* Heading letter spacing */
+    @apply text-foreground; /* Use foreground for headings in dark mode */
+  }
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+     @apply text-white; /* Explicit white for headings in dark mode */
+  }
+  p, li, span, div:not(h1, h2, h3, h4, h5, h6) { /* Target general text elements */
+     @apply text-muted-foreground; /* Use muted-foreground for body in dark mode */
+  }
+  .dark p, .dark li, .dark span, .dark div:not(h1, h2, h3, h4, h5, h6) {
+     @apply text-muted-foreground; /* Use #B0B0B0 for body text in dark mode */
+  }
+
+   /* Container */
+  .container {
+     max-width: 1140px;
+     @apply mx-auto px-4; /* Ensure horizontal padding */
+   }
+
+   /* Section Spacing */
+   section {
+     @apply py-20; /* 80px top/bottom padding */
+   }
+}
+
+@layer components {
+  /* Apply hover glow effect to buttons - adjust color/spread as needed */
+  .btn-glow:hover {
+     box-shadow: 0 0 12px hsl(var(--primary) / 0.4);
+     transform: scale(1.02);
+     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  .btn-glow-accent:hover {
+      box-shadow: 0 0 12px hsl(var(--accent) / 0.4);
+      transform: scale(1.02);
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  /* Style for glassmorphism effect */
+  .glassmorphism {
+      background: hsl(var(--background) / 0.1); /* Very transparent background */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px); /* Safari support */
+      border: 1px solid hsl(var(--border) / 0.2); /* Subtle border */
+   }
+
+   /* Input Field Styling */
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="password"],
+  textarea,
+  select {
+    @apply rounded-[12px] border border-input bg-input px-3 py-2; /* Use theme colors */
+    @apply dark:bg-input dark:border-border; /* Explicit dark mode styles */
+  }
+
+  /* Card hover effect */
+  .card-hover-effect {
+      @apply transition-transform transition-shadow duration-300;
+  }
+  .card-hover-effect:hover {
+      transform: translateY(-4px);
+      @apply shadow-xl; /* Enhance shadow on hover */
+  }
+
+}
+
+/* Keyframes for fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }

@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation'; // Use App Router's useRouter
 import Confetti from 'react-confetti'; // Add a fun effect on completion
+import { cn } from '@/lib/utils'; // Import cn utility
 
 // Mock course and quiz data - replace with data fetched from Firestore later
 // Define Quiz Structure
@@ -184,6 +185,84 @@ const coursesData: { [key: string]: CourseData } = {
       },
     ],
   },
+   'risk-management-strategies': {
+    title: 'Risk Management Strategies',
+    videoId: 'qfmjEv8k72w', // Example YouTube Video ID for Risk Management
+    quiz: [
+      {
+        id: 'risk_q1',
+        question: 'What is a primary purpose of a stop-loss order?',
+        options: [
+          'To guarantee a profit on a trade',
+          'To automatically buy more stock if the price drops',
+          'To limit potential losses on a trade',
+          'To receive dividend alerts',
+        ],
+        correctAnswer: 'To limit potential losses on a trade',
+      },
+      {
+        id: 'risk_q2',
+        question: 'Diversification in investing primarily aims to:',
+        options: [
+          'Maximize returns from a single investment',
+          'Reduce overall portfolio risk',
+          'Focus on only one industry sector',
+          'Eliminate all investment risk',
+        ],
+        correctAnswer: 'Reduce overall portfolio risk',
+      },
+      {
+        id: 'risk_q3',
+        question: 'Position sizing refers to:',
+        options: [
+          'Choosing the largest companies to invest in',
+          'Determining how much capital to allocate to a single trade',
+          'Holding a position for a long time',
+          'The physical size of a stock certificate',
+        ],
+        correctAnswer: 'Determining how much capital to allocate to a single trade',
+      },
+    ],
+  },
+  'behavioral-finance-intro': {
+    title: 'Intro to Behavioral Finance',
+    videoId: 'F8sPQEV3kG8', // Example YouTube Video ID for Behavioral Finance
+    quiz: [
+      {
+        id: 'bf_q1',
+        question: 'Confirmation bias is the tendency to:',
+        options: [
+          'Seek out information that confirms pre-existing beliefs',
+          'Avoid any information related to finance',
+          'Sell stocks too quickly after a loss',
+          'Follow the investment decisions of the crowd',
+        ],
+        correctAnswer: 'Seek out information that confirms pre-existing beliefs',
+      },
+      {
+        id: 'bf_q2',
+        question: 'Loss aversion suggests that people tend to:',
+        options: [
+          'Prefer avoiding losses over acquiring equivalent gains',
+          'Enjoy taking large risks',
+          'Forget about their investment losses easily',
+          'Invest heavily in losing stocks',
+        ],
+        correctAnswer: 'Prefer avoiding losses over acquiring equivalent gains',
+      },
+      {
+        id: 'bf_q3',
+        question: 'Herd mentality in investing often leads to:',
+        options: [
+          'Making independent and rational decisions',
+          'Buying low and selling high consistently',
+          'Following the crowd, potentially during market bubbles or crashes',
+          'Focusing only on company fundamentals',
+        ],
+        correctAnswer: 'Following the crowd, potentially during market bubbles or crashes',
+      },
+    ],
+  },
 };
 
 
@@ -266,13 +345,13 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
 
   return (
     // Removed surrounding div and header/footer elements
-    <div className="container mx-auto px-4 py-12"> {/* Changed main to div, added container/padding */}
+    <div className="container mx-auto px-4 py-12 md:py-20"> {/* Increased padding */}
       {showConfetti && typeof window !== 'undefined' && <Confetti width={windowSize.width} height={windowSize.height} recycle={false} numberOfPieces={500} />}
 
        {/* Back to Course Link */}
         <div className="mb-8">
            <Link href={`/courses/${courseId}`} passHref>
-             <Button variant="outline" size="sm">
+             <Button variant="outline" size="sm" className="btn-glow"> {/* Added glow */}
                <ArrowLeft className="mr-2 h-4 w-4" />
                Back to Course Details
              </Button>
@@ -280,10 +359,10 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
         </div>
 
         {/* Page Title */}
-        <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center">{courseData.title} - Learn</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">{courseData.title} - Learn</h1> {/* White heading */}
 
 
-        <Card className="mb-8 shadow-md">
+        <Card className="mb-12 shadow-xl rounded-xl"> {/* Increased margin, rounded-xl */}
           <CardHeader>
             <CardTitle>Course Video</CardTitle>
             <CardDescription>Watch this video to learn the basics.</CardDescription>
@@ -304,7 +383,7 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
           </CardContent>
         </Card>
 
-        <Card className="shadow-md" id="quiz-card"> {/* Added ID for potential scrolling */}
+        <Card className="shadow-xl rounded-xl" id="quiz-card"> {/* Added ID for potential scrolling, rounded-xl */}
            <CardHeader>
             <CardTitle>Quiz Time!</CardTitle>
             <CardDescription>Test your knowledge with these questions.</CardDescription>
@@ -313,59 +392,60 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
             <form onSubmit={(e) => { e.preventDefault(); handleSubmitQuiz(); }}>
               <div className="space-y-6">
                 {courseData.quiz.map((q, index) => (
-                   <div key={q.id} className={`p-4 border rounded-lg transition-colors duration-300 ${quizSubmitted ? (results[q.id] ? 'border-green-300 bg-green-50/50 dark:bg-green-900/20 dark:border-green-700' : 'border-red-300 bg-red-50/50 dark:bg-red-900/20 dark:border-red-700') : 'border-border'}`}>
-                    <p className="font-medium mb-3">{index + 1}. {q.question}</p>
+                   <div key={q.id} className={`p-4 border rounded-lg transition-colors duration-300 ${quizSubmitted ? (results[q.id] ? 'border-green-500/50 bg-green-900/10 dark:bg-green-900/20 dark:border-green-700' : 'border-red-500/50 bg-red-900/10 dark:bg-red-900/20 dark:border-red-700') : 'border-border'}`}>
+                    <p className="font-medium mb-3 text-base">{index + 1}. {q.question}</p> {/* Slightly larger question text */}
                     <RadioGroup
                       value={answers[q.id]}
                       onValueChange={(value) => handleAnswerChange(q.id, value)}
                       disabled={quizSubmitted}
-                      className="space-y-2" // Add spacing between radio options
+                      className="space-y-3" // Increase spacing between radio options
                     >
                       {q.options.map((option) => (
                         <div key={option} className="flex items-center space-x-3"> {/* Increased spacing */}
                           <RadioGroupItem value={option} id={`${q.id}-${option}`} className="border-primary text-primary focus:ring-primary" />
-                          <Label htmlFor={`${q.id}-${option}`} className={`cursor-pointer flex-1 ${quizSubmitted ? 'text-muted-foreground' : ''}`}>
+                          <Label htmlFor={`${q.id}-${option}`} className={`cursor-pointer flex-1 text-sm ${quizSubmitted ? 'text-muted-foreground/80' : 'text-muted-foreground'}`}>
                              {option}
                              {/* Feedback icons and text next to the option */}
                               {quizSubmitted && results[q.id] === false && option === q.correctAnswer && (
-                               <span className="text-xs text-green-600 dark:text-green-400 ml-2 font-normal">(Correct Answer)</span>
+                               <span className="text-xs text-green-500 dark:text-green-400 ml-2 font-normal">(Correct Answer)</span>
                              )}
                              {quizSubmitted && results[q.id] === false && option === answers[q.id] && (
-                               <XCircle className="h-4 w-4 text-red-500 dark:text-red-400 inline-block ml-2" />
+                               <XCircle className="h-4 w-4 text-destructive inline-block ml-2" />
                              )}
                              {quizSubmitted && results[q.id] === true && option === q.correctAnswer && (
-                               <CheckCircle className="h-4 w-4 text-green-500 dark:text-green-400 inline-block ml-2" />
+                               <CheckCircle className="h-4 w-4 text-accent inline-block ml-2" />
                              )}
                           </Label>
                         </div>
                       ))}
                     </RadioGroup>
                     {quizSubmitted && results[q.id] === false && (
-                      <p className="text-xs text-red-600 dark:text-red-400 mt-2">Incorrect. The correct answer is: {q.correctAnswer}</p>
+                      <p className="text-xs text-destructive mt-2">Incorrect. The correct answer is: {q.correctAnswer}</p>
                     )}
                     {quizSubmitted && results[q.id] === true && (
-                       <p className="text-xs text-green-600 dark:text-green-400 mt-2">Correct!</p>
+                       <p className="text-xs text-accent mt-2">Correct!</p>
                     )}
                   </div>
                 ))}
               </div>
 
                {!quizSubmitted && (
-                 <Button type="submit" disabled={!allQuestionsAnswered} className="mt-8 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
+                 <Button type="submit" disabled={!allQuestionsAnswered} className="mt-8 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground btn-glow"> {/* Added glow */}
                     Submit Quiz
                   </Button>
                )}
 
                {quizSubmitted && (
-                 <div className="mt-8 p-6 border rounded-lg text-center bg-secondary/50 dark:bg-secondary/20">
-                    <h3 className="text-xl font-semibold mb-2">Quiz Results</h3>
+                 // Apply glassmorphism effect here
+                 <div className={cn("mt-8 p-6 rounded-xl text-center glassmorphism", isPassed ? "border-accent/50" : "border-destructive/50")}>
+                    <h3 className="text-xl font-semibold mb-2 text-white">Quiz Results</h3> {/* White heading */}
                     <p className="mb-4 text-muted-foreground">You answered {score} out of {totalQuestions} questions correctly.</p>
                     {isPassed ? (
                       <div className="flex flex-col items-center space-y-4">
                          <CheckCircle className="h-12 w-12 text-accent" />
                          <p className="text-lg font-medium text-accent">Congratulations! You passed!</p>
                          <Link href={`/courses/${courseId}/certificate`} passHref>
-                           <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                           <Button className="bg-accent hover:bg-accent/90 text-accent-foreground btn-glow-accent"> {/* Accent glow */}
                               Claim Your Certificate
                            </Button>
                          </Link>
@@ -386,6 +466,7 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
                             quizCard?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                           }}
                           variant="outline"
+                           className="btn-glow" // Added glow
                           >
                             Try Quiz Again
                           </Button>

@@ -17,9 +17,10 @@ export function Toaster() {
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
-          <Toast key={id} {...props}>
+          // Apply muted background for dark theme toasts
+          <Toast key={id} {...props} className="bg-muted text-muted-foreground border-border">
             <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
+              {title && <ToastTitle className="text-foreground">{title}</ToastTitle>} {/* Ensure title uses foreground */}
               {description && (
                 <ToastDescription>{description}</ToastDescription>
               )}
@@ -29,7 +30,8 @@ export function Toaster() {
           </Toast>
         )
       })}
-      <ToastViewport />
+      {/* Ensure viewport position is top-right */}
+      <ToastViewport className="sm:top-0 sm:right-0 sm:bottom-auto sm:left-auto" />
     </ToastProvider>
   )
 }
