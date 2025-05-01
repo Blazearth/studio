@@ -34,4 +34,3 @@ if (!admin.apps.length) {
 export const auth = admin.auth();
 export const firestore = admin.firestore();
 // export const storage = admin.storage(); // Uncomment if you need storage
-```
