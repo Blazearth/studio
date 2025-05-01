@@ -43,7 +43,7 @@ export default function Home() {
                 width={600}
                 height={400}
                 className="rounded-lg shadow-xl"
-                data-ai-hint="stock market graph finance learning"
+                data-ai-hint="stock market education finance graph" // Updated hint
               />
           </div>
         </div>

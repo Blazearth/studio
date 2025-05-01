@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +11,7 @@ const courses = [
     title: 'Intro to Stock Market',
     description: 'Learn the fundamentals of the stock market, how it works, and basic investment concepts. Perfect for beginners!',
     imageUrl: 'https://picsum.photos/400/200?random=1',
-    imageHint: 'stock chart finance graph',
+    imageHint: 'stock market basics finance graph', // Updated hint
     isFree: true,
   },
   {
@@ -20,7 +19,7 @@ const courses = [
     title: 'Options Trading Basics',
     description: 'Understand call and put options, basic strategies like covered calls, and the risks involved in options trading.',
     imageUrl: 'https://picsum.photos/400/200?random=2',
-    imageHint: 'options chain trading chart',
+    imageHint: 'options trading chart strategy', // Updated hint
     isFree: false, // Example of a paid course
   },
   {
@@ -28,7 +27,7 @@ const courses = [
     title: 'Technical Analysis 101',
     description: 'Get started with reading stock charts, identifying trends, support/resistance levels, and common indicators.',
     imageUrl: 'https://picsum.photos/400/200?random=3',
-    imageHint: 'candlestick chart technical analysis',
+    imageHint: 'candlestick chart technical analysis finance', // Updated hint
     isFree: true,
   },
    {
@@ -36,10 +35,26 @@ const courses = [
     title: 'Fundamental Analysis Guide',
     description: 'Learn how to evaluate a company\'s financial health by analyzing balance sheets, income statements, and cash flow.',
     imageUrl: 'https://picsum.photos/400/200?random=4',
-    imageHint: 'financial report analysis company evaluation',
+    imageHint: 'financial report company analysis stocks', // Updated hint
     isFree: false, // Example of a paid course
   },
-  // Add more courses here in the future
+  // Added Courses
+   {
+    id: 'risk-management-strategies',
+    title: 'Risk Management Strategies',
+    description: 'Learn essential techniques to manage risk in your stock market investments, including stop-loss orders and diversification.',
+    imageUrl: 'https://picsum.photos/400/200?random=5',
+    imageHint: 'risk management investment strategy finance', // Updated hint
+    isFree: true,
+  },
+   {
+    id: 'behavioral-finance-intro',
+    title: 'Intro to Behavioral Finance',
+    description: 'Understand how psychological biases can affect investment decisions and learn strategies to overcome them.',
+    imageUrl: 'https://picsum.photos/400/200?random=6',
+    imageHint: 'behavioral finance psychology investment', // Updated hint
+    isFree: false,
+  },
 ];
 
 export default function CoursesPage() {

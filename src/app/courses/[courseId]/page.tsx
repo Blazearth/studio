@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +13,7 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     longDescription: 'This comprehensive introductory course covers the essential concepts you need to understand the stock market. We\'ll explore topics like what stocks are, how exchanges work, different types of orders, market indices, basic analysis techniques, and the risks involved. By the end of this course, you\'ll have a solid foundation to start your investment learning journey.',
     videoId: 'YSgk5_WXDfE', // Example YouTube Video ID (replace with actual)
     imageUrl: 'https://picsum.photos/800/400?random=1',
-    imageHint: 'stock market analysis chart',
+    imageHint: 'stock market analysis chart finance', // Updated hint
     isFree: true,
   },
    'options-trading-basics': {
@@ -23,7 +22,7 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     longDescription: 'Dive into the world of options trading. This course explains the core concepts of call and put options, introduces common terminology (strike price, expiry, premium), explores basic strategies like buying calls/puts and covered calls, and highlights the significant risks associated with options.',
     videoId: 'sdMfLkg3MgQ', // Example YouTube Video ID for Options
     imageUrl: 'https://picsum.photos/800/400?random=2',
-    imageHint: 'options trading strategy chart',
+    imageHint: 'options trading strategy analysis', // Updated hint
     isFree: false,
   },
   'technical-analysis-101': {
@@ -32,7 +31,7 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     longDescription: 'Learn the basics of technical analysis to help you make trading decisions. This course covers how to read candlestick charts, identify uptrends and downtrends, understand support and resistance levels, and introduces popular indicators like Moving Averages and RSI.',
     videoId: 'eynxyoKgpng', // Example YouTube Video ID for Technical Analysis
     imageUrl: 'https://picsum.photos/800/400?random=3',
-    imageHint: 'technical analysis stock chart patterns',
+    imageHint: 'technical analysis stock chart patterns finance', // Updated hint
     isFree: true,
   },
   'fundamental-analysis-guide': {
@@ -41,7 +40,26 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     longDescription: 'Discover how to assess the intrinsic value of a stock through fundamental analysis. This guide explains how to read and interpret key financial statements like the balance sheet, income statement, and cash flow statement. Learn about important financial ratios and metrics used to evaluate a company\'s performance and value.',
     videoId: 'DvpaF3g_798', // Example YouTube Video ID for Fundamental Analysis
     imageUrl: 'https://picsum.photos/800/400?random=4',
-    imageHint: 'financial statements analysis report',
+    imageHint: 'financial statements analysis report stocks', // Updated hint
+    isFree: false,
+  },
+  // Added Courses
+  'risk-management-strategies': {
+    title: 'Risk Management Strategies',
+    description: 'Learn essential techniques to manage risk in your stock market investments, including stop-loss orders and diversification.',
+    longDescription: 'Master the art of protecting your capital in the stock market. This course delves into crucial risk management techniques, explaining concepts like setting stop-loss orders, position sizing, portfolio diversification across different asset classes and sectors, and understanding risk tolerance. Equip yourself with the tools to invest more confidently.',
+    videoId: 'qfmjEv8k72w', // Example YouTube Video ID for Risk Management
+    imageUrl: 'https://picsum.photos/800/400?random=5',
+    imageHint: 'investment risk management diversification finance', // Updated hint
+    isFree: true,
+  },
+  'behavioral-finance-intro': {
+    title: 'Intro to Behavioral Finance',
+    description: 'Understand how psychological biases can affect investment decisions and learn strategies to overcome them.',
+    longDescription: 'Explore the fascinating intersection of psychology and finance. This introductory course explains common behavioral biases (like confirmation bias, loss aversion, herd mentality) that influence investor behavior. Learn to recognize these biases in yourself and others, and discover practical strategies to make more rational investment decisions.',
+    videoId: 'F8sPQEV3kG8', // Example YouTube Video ID for Behavioral Finance
+    imageUrl: 'https://picsum.photos/800/400?random=6',
+    imageHint: 'behavioral finance psychology decision making investment', // Updated hint
     isFree: false,
   },
 };
