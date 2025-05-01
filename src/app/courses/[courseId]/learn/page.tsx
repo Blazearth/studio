@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -239,4 +240,3 @@ export default function LearnPage({ params }: { params: { courseId: string } }) 
     // Removed Footer
   );
 }
-```
