@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 interface LeaderboardProps {
   data: { userId: string; pnl: number }[];
-  isLoading: boolean;
+  isLoading: boolean; // Keep for potential manual refreshes, but initial load handled by parent/Suspense
   currentUserId?: string; // Optional: To highlight the current user
 }
 
@@ -20,7 +20,7 @@ export default function Leaderboard({ data, isLoading, currentUserId }: Leaderbo
     return value.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  // Skeleton rows
+  // Skeleton rows - still useful if isLoading prop is used for refreshes
    const renderSkeletonRows = (count = 5) => {
      return Array.from({ length: count }).map((_, index) => (
        <TableRow key={`leader-skeleton-${index}`}>
@@ -51,6 +51,7 @@ export default function Leaderboard({ data, isLoading, currentUserId }: Leaderbo
           </TableRow>
         </TableHeader>
         <TableBody>
+          {/* Render skeleton only if the isLoading prop is true */}
           {isLoading ? (
             renderSkeletonRows(5)
           ) : data.length === 0 ? (
@@ -88,4 +89,3 @@ export default function Leaderboard({ data, isLoading, currentUserId }: Leaderbo
     </div>
   );
 }
-```

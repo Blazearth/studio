@@ -8,14 +8,13 @@ import { toast } from '@/hooks/use-toast';
 import TradeForm from './trade-form';
 import TradeSummaryTable from './trade-summary-table';
 import Leaderboard from './leaderboard'; // Renamed component
-import type { Trade, Asset } from '@/types/simulator';
+import type { Trade, Asset, UserSimulatorData } from '@/types/simulator';
 import { placeTradeAction, closeTradeAction, updateUserBalanceAction, fetchUserDataAction, fetchLeaderboardDataAction } from '@/actions/simulator';
 import { TrendingUp, TrendingDown, RefreshCw } from 'lucide-react';
 
 const INITIAL_BALANCE = 100000; // ₹1,00,000
 
 // Define assets and their properties (mock strike prices/expiries for now)
-// In a real app, this data might come from an API
 const assets: Asset[] = [
   { id: 'NIFTY 50', name: 'NIFTY 50', strikePrices: [22000, 22100, 22200, 22300, 22400, 22500], expiries: ['2024-08-29', '2024-09-26'], basePremium: 100 },
   { id: 'BANKNIFTY', name: 'BANKNIFTY', strikePrices: [48000, 48200, 48400, 48600, 48800, 49000], expiries: ['2024-08-28', '2024-09-25'], basePremium: 150 },
@@ -26,62 +25,42 @@ const assets: Asset[] = [
 
 interface SimulatorDashboardProps {
   userId: string;
+  initialUserData: UserSimulatorData | null; // Receive initial data from server component
+  initialLeaderboardData: { userId: string; pnl: number }[]; // Receive initial leaderboard data
 }
 
-export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) {
-  const [virtualBalance, setVirtualBalance] = useState<number | null>(null);
-  const [activeTrades, setActiveTrades] = useState<Trade[]>([]);
-  const [leaderboardData, setLeaderboardData] = useState<{ userId: string; pnl: number }[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export default function SimulatorDashboard({ userId, initialUserData, initialLeaderboardData }: SimulatorDashboardProps) {
+  // Initialize state from props
+  const [virtualBalance, setVirtualBalance] = useState<number | null>(
+    initialUserData?.balance ?? INITIAL_BALANCE // Use prop or default
+  );
+  const [activeTrades, setActiveTrades] = useState<Trade[]>(
+    initialUserData?.trades ?? [] // Use prop or default
+  );
+  const [leaderboardData, setLeaderboardData] = useState<{ userId: string; pnl: number }[]>(
+    initialLeaderboardData // Use prop
+  );
+  // Loading state is primarily handled by Suspense, but keep for subsequent actions
+  const [isLoading, setIsLoading] = useState(false); // Initially false, as data is passed in
   const [isPlacingTrade, setIsPlacingTrade] = useState(false);
   const [isClosingTrade, setIsClosingTrade] = useState<string | null>(null); // Store tradeId being closed
   const [isUpdatingPrices, setIsUpdatingPrices] = useState(false);
 
-  // Fetch initial user data (balance, trades) and leaderboard
-  const loadInitialData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const [userData, leaders] = await Promise.all([
-        fetchUserDataAction(userId),
-        fetchLeaderboardDataAction() // Assuming this fetches top users
-      ]);
+  // No initial useEffect fetch needed as data comes from props
 
-      setVirtualBalance(userData.balance ?? INITIAL_BALANCE); // Use initial balance if not found
-      setActiveTrades(userData.trades);
-      setLeaderboardData(leaders);
-
-      // If balance was null, set the initial balance in Firestore
-      if (userData.balance === null) {
-          await updateUserBalanceAction(userId, INITIAL_BALANCE);
-      }
-
-    } catch (error) {
-      console.error('Error loading initial data:', error);
-      toast({
-        title: 'Error Loading Data',
-        description: 'Could not fetch your trading data. Using defaults.',
-        variant: 'destructive',
-      });
-      // Set defaults if fetch fails
-      setVirtualBalance(INITIAL_BALANCE);
-      setActiveTrades([]);
-      setLeaderboardData([]);
-       // Attempt to set initial balance even if fetch fails
+  // Function to refresh leaderboard data on the client after an action
+  const refreshLeaderboard = useCallback(async () => {
       try {
-          await updateUserBalanceAction(userId, INITIAL_BALANCE);
-      } catch (initError) {
-          console.error('Error setting initial balance:', initError);
+          const leaders = await fetchLeaderboardDataAction();
+          setLeaderboardData(leaders);
+      } catch (error) {
+          console.error("Error refreshing leaderboard:", error);
+          // Optionally show a toast notification for the error
       }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [userId]);
+  }, []);
 
-  useEffect(() => {
-    loadInitialData();
-  }, [loadInitialData]);
 
-  // Simulate price update
+  // Simulate price update remains the same
   const handleUpdatePrices = useCallback(() => {
     setIsUpdatingPrices(true);
     setActiveTrades(prevTrades =>
@@ -92,9 +71,7 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
         return { ...trade, currentPremium: parseFloat(newPremium.toFixed(2)), pnl: parseFloat(pnl.toFixed(2)) };
       })
     );
-    // Simulate network delay/processing time
     setTimeout(() => setIsUpdatingPrices(false), 500);
-
     toast({
         title: "Prices Updated",
         description: "Simulated market prices have been updated.",
@@ -102,6 +79,7 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
   }, []);
 
 
+  // Place trade logic remains largely the same, but refreshes leaderboard at the end
   const handlePlaceTrade = async (tradeDetails: Omit<Trade, 'id' | 'entryTime' | 'pnl' | 'userId' | 'currentPremium'>) => {
     if (virtualBalance === null) return;
     setIsPlacingTrade(true);
@@ -113,8 +91,7 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
         return;
     }
 
-    // Mock Premium Calculation (replace with actual logic/API if available)
-    const entryPremium = asset.basePremium * (1 + (Math.random() - 0.5) * 0.1); // Add +/- 5% randomness
+    const entryPremium = asset.basePremium * (1 + (Math.random() - 0.5) * 0.1);
     const tradeCost = entryPremium * tradeDetails.quantity;
 
     if (tradeCost > virtualBalance) {
@@ -131,16 +108,16 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
       ...tradeDetails,
       userId: userId,
       entryPremium: parseFloat(entryPremium.toFixed(2)),
-      currentPremium: parseFloat(entryPremium.toFixed(2)), // Start current = entry
+      currentPremium: parseFloat(entryPremium.toFixed(2)),
       pnl: 0,
       entryTime: new Date().toISOString(),
     };
 
     try {
-      const addedTrade = await placeTradeAction(newTrade); // Server action handles saving to DB
+      const addedTrade = await placeTradeAction(newTrade);
       const newBalance = virtualBalance - tradeCost;
 
-      await updateUserBalanceAction(userId, newBalance); // Update balance in DB
+      await updateUserBalanceAction(userId, newBalance);
 
       setActiveTrades(prev => [...prev, addedTrade]);
       setVirtualBalance(newBalance);
@@ -149,6 +126,10 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
         title: 'Trade Placed Successfully!',
         description: `${tradeDetails.quantity} units of ${tradeDetails.assetId} ${tradeDetails.strikePrice} ${tradeDetails.tradeType} bought.`,
       });
+
+      // Refresh leaderboard after placing trade (optional, depends on requirements)
+      // await refreshLeaderboard();
+
     } catch (error) {
       console.error('Error placing trade:', error);
       toast({
@@ -161,6 +142,7 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
     }
   };
 
+  // Close trade logic remains largely the same, but calls refreshLeaderboard
   const handleCloseTrade = async (tradeId: string) => {
     if (virtualBalance === null) return;
     const tradeToClose = activeTrades.find(t => t.id === tradeId);
@@ -169,19 +151,17 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
     setIsClosingTrade(tradeId);
 
     try {
-        // Calculate final P&L based on the *current* simulated premium
         const finalPnl = (tradeToClose.currentPremium - tradeToClose.entryPremium) * tradeToClose.quantity;
-        const newBalance = virtualBalance + (tradeToClose.entryPremium * tradeToClose.quantity) + finalPnl; // Return initial cost + P&L
+        const newBalance = virtualBalance + (tradeToClose.entryPremium * tradeToClose.quantity) + finalPnl;
 
-        await closeTradeAction(tradeId, finalPnl); // Server action handles removing from DB & potentially logging P&L
-        await updateUserBalanceAction(userId, newBalance); // Update balance in DB
+        await closeTradeAction(tradeId, finalPnl);
+        await updateUserBalanceAction(userId, newBalance);
 
         setActiveTrades(prev => prev.filter(t => t.id !== tradeId));
         setVirtualBalance(newBalance);
-        // Refresh leaderboard after closing a trade
-        const leaders = await fetchLeaderboardDataAction();
-        setLeaderboardData(leaders);
 
+        // Refresh leaderboard after closing a trade
+        await refreshLeaderboard();
 
         toast({
             title: 'Trade Closed',
@@ -197,7 +177,7 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
         variant: 'destructive',
       });
     } finally {
-      setIsClosingTrade(null); // Reset loading state for this specific trade
+      setIsClosingTrade(null);
     }
   };
 
@@ -213,13 +193,10 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
           {/* Virtual Balance Display */}
           <div className="p-4 border rounded-lg bg-secondary/30">
             <p className="text-sm text-muted-foreground mb-1">Virtual Balance</p>
-            {isLoading ? (
-               <div className="h-8 w-32 bg-muted animate-pulse rounded"></div>
-             ) : (
-               <p className="text-2xl font-bold">
-                 ₹{virtualBalance !== null ? virtualBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'Loading...'}
-               </p>
-            )}
+            {/* Display balance directly from state, which is initialized by props */}
+            <p className="text-2xl font-bold">
+              ₹{virtualBalance !== null ? virtualBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'Error'}
+            </p>
           </div>
 
           {/* Trade Form */}
@@ -248,8 +225,10 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
             <TradeSummaryTable
                 trades={activeTrades}
                 onCloseTrade={handleCloseTrade}
-                closingTradeId={isClosingTrade} // Pass loading state for specific trade
-                isLoading={isLoading} // Pass overall loading state for skeleton
+                closingTradeId={isClosingTrade}
+                // isLoading prop might not be needed here if Suspense handles the initial load
+                // Set to false as initial data is provided.
+                isLoading={false}
                 />
           </div>
         </CardContent>
@@ -262,10 +241,10 @@ export default function SimulatorDashboard({ userId }: SimulatorDashboardProps) 
           <CardDescription>Top traders by simulated P&L.</CardDescription>
         </CardHeader>
         <CardContent>
-           <Leaderboard data={leaderboardData} isLoading={isLoading} currentUserId={userId} />
+           {/* Pass initial leaderboard data and handle loading state internally if needed for refreshes */}
+           <Leaderboard data={leaderboardData} isLoading={false} currentUserId={userId} />
         </CardContent>
       </Card>
     </div>
   );
 }
-```

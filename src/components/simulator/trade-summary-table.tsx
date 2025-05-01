@@ -13,7 +13,7 @@ interface TradeSummaryTableProps {
   trades: Trade[];
   onCloseTrade: (tradeId: string) => void;
   closingTradeId: string | null; // ID of the trade currently being closed
-  isLoading: boolean; // Added for skeleton loading state
+  isLoading: boolean; // Keep for potential manual refreshes/updates, but initial load handled by parent/Suspense
 }
 
 export default function TradeSummaryTable({ trades, onCloseTrade, closingTradeId, isLoading }: TradeSummaryTableProps) {
@@ -23,7 +23,7 @@ export default function TradeSummaryTable({ trades, onCloseTrade, closingTradeId
     return value.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  // Skeleton rows
+  // Skeleton rows - still useful if isLoading prop is true during updates
   const renderSkeletonRows = (count = 3) => {
     return Array.from({ length: count }).map((_, index) => (
       <TableRow key={`skeleton-${index}`}>
@@ -56,6 +56,7 @@ export default function TradeSummaryTable({ trades, onCloseTrade, closingTradeId
           </TableRow>
         </TableHeader>
         <TableBody>
+          {/* Render skeleton only if the isLoading prop is true */}
           {isLoading ? (
             renderSkeletonRows(3)
           ) : trades.length === 0 ? (
@@ -111,4 +112,3 @@ export default function TradeSummaryTable({ trades, onCloseTrade, closingTradeId
     </div>
   );
 }
-```

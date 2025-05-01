@@ -3,13 +3,52 @@ import { Suspense } from 'react';
 import SimulatorDashboard from '@/components/simulator/simulator-dashboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { fetchUserDataAction, fetchLeaderboardDataAction } from '@/actions/simulator';
+import type { UserSimulatorData } from '@/types/simulator';
 
-// Mock User ID - Replace with actual Firebase Auth user ID
+// Mock User ID - Replace with actual Firebase Auth user ID (e.g., from server session)
+// In a real app, you'd get this from authentication context on the server.
 const MOCK_USER_ID = 'user_mock_123';
+const INITIAL_BALANCE = 100000; // Define default initial balance
 
-// TODO: Add Firebase Auth integration to get the real user ID
+// TODO: Add Firebase Auth integration to get the real user ID server-side
 
-export default function SimulatorPage() {
+// Make the page component async to fetch data on the server
+export default async function SimulatorPage() {
+  // Fetch initial data on the server
+  // Use Promise.all for parallel fetching
+  let initialUserData: UserSimulatorData | null = null;
+  let initialLeaderboardData: { userId: string; pnl: number }[] = [];
+  let fetchError = false;
+
+  try {
+    // Ensure user data is initialized if it doesn't exist during fetch
+    // fetchUserDataAction now handles initialization implicitly
+    [initialUserData, initialLeaderboardData] = await Promise.all([
+      fetchUserDataAction(MOCK_USER_ID), // Fetches or initializes user data
+      fetchLeaderboardDataAction(), // Fetches leaderboard
+    ]);
+
+    // Ensure balance isn't null if user existed but balance was missing
+    if (initialUserData && initialUserData.balance === null) {
+        initialUserData.balance = INITIAL_BALANCE;
+        // Consider if we need to update the DB again here, fetchUserDataAction should handle it.
+    }
+
+  } catch (error) {
+    console.error("Error fetching initial simulator data on server:", error);
+    fetchError = true;
+    // Set default values in case of error
+    initialUserData = {
+      balance: INITIAL_BALANCE,
+      trades: [],
+      totalPnl: 0,
+    };
+    initialLeaderboardData = [];
+    // Consider logging this error more formally
+  }
+
+
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">
       <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">
@@ -17,18 +56,27 @@ export default function SimulatorPage() {
       </h1>
 
       {/*
-        Wrap the dashboard in Suspense for potential data loading states.
-        Pass the userId to the dashboard component.
+        Wrap the dashboard in Suspense. Pass the fetched initial data.
+        The client component will use this data for its initial state.
       */}
       <Suspense fallback={<SimulatorSkeleton />}>
-        {/* In a real app, get userId from authentication context/session */}
-        <SimulatorDashboard userId={MOCK_USER_ID} />
+        {fetchError && (
+          <div className="text-center text-red-600 mb-4">
+            Error loading initial data. Displaying default state.
+          </div>
+        )}
+        {/* Pass initial data to the client component */}
+        <SimulatorDashboard
+          userId={MOCK_USER_ID}
+          initialUserData={initialUserData} // Pass potentially null or initialized data
+          initialLeaderboardData={initialLeaderboardData}
+        />
       </Suspense>
     </div>
   );
 }
 
-// Skeleton component for loading state
+// Skeleton component for loading state remains the same
 function SimulatorSkeleton() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -64,4 +112,3 @@ function SimulatorSkeleton() {
     </div>
   );
 }
-```
