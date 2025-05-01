@@ -15,12 +15,13 @@ import { TrendingUp, TrendingDown, RefreshCw } from 'lucide-react';
 const INITIAL_BALANCE = 100000; // ₹1,00,000
 
 // Define assets and their properties (mock strike prices/expiries for now)
+// Updated expiry dates to 2025
 const assets: Asset[] = [
-  { id: 'NIFTY 50', name: 'NIFTY 50', strikePrices: [22000, 22100, 22200, 22300, 22400, 22500], expiries: ['2024-08-29', '2024-09-26'], basePremium: 100 },
-  { id: 'BANKNIFTY', name: 'BANKNIFTY', strikePrices: [48000, 48200, 48400, 48600, 48800, 49000], expiries: ['2024-08-28', '2024-09-25'], basePremium: 150 },
-  { id: 'Reliance', name: 'Reliance', strikePrices: [2800, 2820, 2840, 2860, 2880, 2900], expiries: ['2024-08-29', '2024-09-26'], basePremium: 50 },
-  { id: 'TCS', name: 'TCS', strikePrices: [3800, 3820, 3840, 3860, 3880, 3900], expiries: ['2024-08-29', '2024-09-26'], basePremium: 70 },
-  { id: 'Infosys', name: 'Infosys', strikePrices: [1600, 1610, 1620, 1630, 1640, 1650], expiries: ['2024-08-29', '2024-09-26'], basePremium: 30 },
+  { id: 'NIFTY 50', name: 'NIFTY 50', strikePrices: [22000, 22100, 22200, 22300, 22400, 22500], expiries: ['2025-08-28', '2025-09-25'], basePremium: 100 },
+  { id: 'BANKNIFTY', name: 'BANKNIFTY', strikePrices: [48000, 48200, 48400, 48600, 48800, 49000], expiries: ['2025-08-27', '2025-09-24'], basePremium: 150 },
+  { id: 'Reliance', name: 'Reliance', strikePrices: [2800, 2820, 2840, 2860, 2880, 2900], expiries: ['2025-08-28', '2025-09-25'], basePremium: 50 },
+  { id: 'TCS', name: 'TCS', strikePrices: [3800, 3820, 3840, 3860, 3880, 3900], expiries: ['2025-08-28', '2025-09-25'], basePremium: 70 },
+  { id: 'Infosys', name: 'Infosys', strikePrices: [1600, 1610, 1620, 1630, 1640, 1650], expiries: ['2025-08-28', '2025-09-25'], basePremium: 30 },
 ];
 
 interface SimulatorDashboardProps {
@@ -91,7 +92,21 @@ export default function SimulatorDashboard({ userId, initialUserData, initialLea
         return;
     }
 
-    const entryPremium = asset.basePremium * (1 + (Math.random() - 0.5) * 0.1);
+    // Simulate realistic premium calculation (can be enhanced)
+    // This is a very basic example, a real sim might use volatility, time decay etc.
+    let premiumMultiplier = 1.0;
+    if (tradeDetails.tradeType === 'Call Option') {
+        // Basic logic: Higher strike might be cheaper, lower strike might be expensive
+        premiumMultiplier += (asset.strikePrices[Math.floor(asset.strikePrices.length / 2)] - tradeDetails.strikePrice) / (asset.strikePrices[asset.strikePrices.length-1] - asset.strikePrices[0]) * 0.2;
+    } else { // Put Option
+        premiumMultiplier += (tradeDetails.strikePrice - asset.strikePrices[Math.floor(asset.strikePrices.length / 2)]) / (asset.strikePrices[asset.strikePrices.length-1] - asset.strikePrices[0]) * 0.2;
+    }
+    // Add some randomness
+    premiumMultiplier *= (1 + (Math.random() - 0.5) * 0.1); // +/- 5% random variation
+
+    const entryPremium = Math.max(1, asset.basePremium * premiumMultiplier); // Ensure premium is at least 1
+
+
     const tradeCost = entryPremium * tradeDetails.quantity;
 
     if (tradeCost > virtualBalance) {
@@ -114,9 +129,11 @@ export default function SimulatorDashboard({ userId, initialUserData, initialLea
     };
 
     try {
+      // Use mock action since Firestore is removed
       const addedTrade = await placeTradeAction(newTrade);
       const newBalance = virtualBalance - tradeCost;
 
+      // Update balance using mock action
       await updateUserBalanceAction(userId, newBalance);
 
       setActiveTrades(prev => [...prev, addedTrade]);
@@ -134,7 +151,8 @@ export default function SimulatorDashboard({ userId, initialUserData, initialLea
       console.error('Error placing trade:', error);
       toast({
         title: 'Trade Failed',
-        description: 'Could not place the trade. Please try again.',
+        // Use error.message if it exists, otherwise provide a generic message
+        description: error instanceof Error ? error.message : 'Could not place the trade. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -152,8 +170,12 @@ export default function SimulatorDashboard({ userId, initialUserData, initialLea
 
     try {
         const finalPnl = (tradeToClose.currentPremium - tradeToClose.entryPremium) * tradeToClose.quantity;
+        // Calculate balance *after* closing trade: current balance + cost basis + PNL
+        // Cost basis = tradeToClose.entryPremium * tradeToClose.quantity
         const newBalance = virtualBalance + (tradeToClose.entryPremium * tradeToClose.quantity) + finalPnl;
 
+
+        // Use mock actions
         await closeTradeAction(tradeId, finalPnl);
         await updateUserBalanceAction(userId, newBalance);
 
