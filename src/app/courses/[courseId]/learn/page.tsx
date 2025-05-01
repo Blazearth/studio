@@ -55,8 +55,11 @@ const courseData = {
 type AnswersState = { [key: string]: string };
 type ResultsState = { [key: string]: boolean | null };
 
-export default function LearnPage({ params }: { params: { courseId: string } }) {
-  const { courseId } = params; // Get courseId from params
+// NOTE: params is a Promise in Client Components with App Router
+export default function LearnPage({ params }: { params: Promise<{ courseId: string }> }) {
+  // Use React.use to unwrap the Promise
+  // This hook must be called inside the component body
+  const { courseId } = React.use(params); // Get courseId from unwrapped params
   const router = useRouter();
   const [answers, setAnswers] = useState<AnswersState>({});
   const [results, setResults] = useState<ResultsState>({});

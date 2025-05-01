@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -12,8 +13,11 @@ import { Certificate, getCertificate } from '@/services/certificate'; // Import 
 // Mock course data
 const courseTitle = 'Intro to Stock Market';
 
-export default function CertificatePage({ params }: { params: { courseId: string } }) {
-  const { courseId } = params;
+// NOTE: params is a Promise in Client Components with App Router
+export default function CertificatePage({ params }: { params: Promise<{ courseId: string }> }) {
+  // Use React.use to unwrap the Promise
+  // This hook must be called inside the component body
+  const { courseId } = React.use(params); // Get courseId from unwrapped params
   const [name, setName] = useState('');
   const [isNameSet, setIsNameSet] = useState(false);
   const [certificateDetails, setCertificateDetails] = useState<Certificate | null>(null);
@@ -126,4 +130,3 @@ export default function CertificatePage({ params }: { params: { courseId: string
     // Removed Footer
   );
 }
-```
