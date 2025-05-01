@@ -79,7 +79,7 @@ export function Header() {
 
         <div className="hidden flex-1 items-center justify-end space-x-4 md:flex">
            {/* Add Login/Auth button here later */}
-           <Button variant="ghost">Login (Placeholder)</Button>
+           <Button variant="ghost">Login</Button>
         </div>
       </div>
     </header>
