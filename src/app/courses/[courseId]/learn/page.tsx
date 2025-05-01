@@ -302,7 +302,7 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
     // router.push('/courses'); // Example redirect
      return (
         <div className="container mx-auto px-4 py-12 text-center">
-            <h1 className="text-2xl font-bold mb-4">Course Not Found</h1>
+            <h1 className="text-2xl font-bold mb-4 font-heading">Course Not Found</h1> {/* Added font-heading */}
             <p className="text-muted-foreground mb-8">The learning content for this course could not be found.</p>
             <Link href="/courses" passHref>
               <Button variant="outline">
@@ -359,10 +359,10 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
         </div>
 
         {/* Page Title */}
-        <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">{courseData.title} - Learn</h1> {/* White heading */}
+        <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white font-heading">{courseData.title} - Learn</h1> {/* White heading, Added font-heading */}
 
 
-        <Card className="mb-12 shadow-xl rounded-xl"> {/* Increased margin, rounded-xl */}
+        <Card className="mb-12 shadow-xl rounded-lg"> {/* Increased margin, rounded-lg */}
           <CardHeader>
             <CardTitle>Course Video</CardTitle>
             <CardDescription>Watch this video to learn the basics.</CardDescription>
@@ -383,7 +383,7 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
           </CardContent>
         </Card>
 
-        <Card className="shadow-xl rounded-xl" id="quiz-card"> {/* Added ID for potential scrolling, rounded-xl */}
+        <Card className="shadow-xl rounded-lg" id="quiz-card"> {/* Added ID for potential scrolling, rounded-lg */}
            <CardHeader>
             <CardTitle>Quiz Time!</CardTitle>
             <CardDescription>Test your knowledge with these questions.</CardDescription>
@@ -437,8 +437,8 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
 
                {quizSubmitted && (
                  // Apply glassmorphism effect here
-                 <div className={cn("mt-8 p-6 rounded-xl text-center glassmorphism", isPassed ? "border-accent/50" : "border-destructive/50")}>
-                    <h3 className="text-xl font-semibold mb-2 text-white">Quiz Results</h3> {/* White heading */}
+                 <div className={cn("mt-8 p-6 rounded-lg text-center glassmorphism", isPassed ? "border-accent/50" : "border-destructive/50")}>
+                    <h3 className="text-xl font-semibold mb-2 text-white font-heading">Quiz Results</h3> {/* White heading, Added font-heading */}
                     <p className="mb-4 text-muted-foreground">You answered {score} out of {totalQuestions} questions correctly.</p>
                     {isPassed ? (
                       <div className="flex flex-col items-center space-y-4">

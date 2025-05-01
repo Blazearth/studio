@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 uppercase tracking-wider [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", // Changed rounded-md to rounded-lg, added uppercase and tracking-wider
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 tracking-wider [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", // Changed rounded-lg to rounded-sm (8px), removed uppercase
   {
     variants: {
       variant: {
@@ -20,10 +20,10 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline", // No glow for link
       },
       size: {
-        default: "h-10 px-4 py-2 text-base", // Changed text-sm to text-base (16px)
-        sm: "h-9 rounded-lg px-3 text-sm", // Changed rounded-md to rounded-lg
-        lg: "h-11 rounded-lg px-8 text-base", // Changed rounded-md to rounded-lg, text-sm to text-base
-        icon: "h-10 w-10 rounded-lg", // Changed rounded-md to rounded-lg
+        default: "h-10 px-4 py-2 text-sm", // Changed text-base to text-sm
+        sm: "h-9 rounded-sm px-3 text-xs", // Changed rounded-lg to rounded-sm
+        lg: "h-11 rounded-sm px-8 text-sm", // Changed rounded-lg to rounded-sm, text-base to text-sm
+        icon: "h-10 w-10 rounded-sm", // Changed rounded-lg to rounded-sm
       },
     },
     defaultVariants: {

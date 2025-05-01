@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontFamily } from 'tailwindcss/defaultTheme'; // Import default theme fonts
 
 export default {
     darkMode: ["class"],
@@ -9,6 +10,10 @@ export default {
   ],
   theme: {
   	extend: {
+      fontFamily: {
+        sans: ["var(--font-roboto)", ...fontFamily.sans], // Default sans-serif to Roboto
+        heading: ["var(--font-poppins)", ...fontFamily.sans], // Heading font to Poppins
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -62,10 +67,11 @@ export default {
   			}
   		},
   		borderRadius: {
-        xl: 'calc(var(--radius) + 4px)', // ~20px if --radius is 1rem (16px)
-  			lg: 'var(--radius)', // 16px
-  			md: 'calc(var(--radius) - 4px)', // 12px
-  			sm: 'calc(var(--radius) - 8px)' // 8px
+        // Use 8px base radius (--radius = 0.5rem)
+        xl: 'calc(var(--radius) + 12px)', // 20px (0.5 + 0.75)
+  			lg: 'calc(var(--radius) + 8px)', // 16px (0.5 + 0.5)
+  			md: 'calc(var(--radius) + 4px)', // 12px (0.5 + 0.25)
+  			sm: 'var(--radius)' // 8px (0.5)
   		},
   		keyframes: {
   			'accordion-down': {

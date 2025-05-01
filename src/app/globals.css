@@ -8,74 +8,76 @@ body {
 
 @layer base {
   :root {
-    /* Light Theme (Adjusted for contrast with new accents) */
-    --background: 0 0% 100%; /* White */
-    --foreground: 0 0% 6%; /* Near Black */
+    /* Light Theme (New Gen Z Palette) */
+    --background: 38 43% 88%; /* Alpine Oat */
+    --foreground: 237 28% 48%; /* Aura Indigo */
     --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 6%; /* Near Black */
+    --card-foreground: 237 28% 48%; /* Aura Indigo */
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 0 0% 6%; /* Near Black */
-    --primary: 197 100% 47%; /* Electric Blue */
+    --popover-foreground: 237 28% 48%; /* Aura Indigo */
+    --primary: 347 97% 42%; /* Cherry Red */
     --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 0 0% 96.1%; /* Light Gray */
-    --secondary-foreground: 0 0% 9%; /* Dark Gray */
-    --muted: 0 0% 90%; /* Slightly darker gray for subtle elements */
-    --muted-foreground: 0 0% 43%; /* #6D6D6D - Soft Gray */
-    --accent: 157 58% 53%; /* Lime Green */
-    --accent-foreground: 0 0% 6%; /* Dark text for green bg */
-    --destructive: 0 100% 66%; /* #FF5252 */
+    --secondary: 237 28% 48%; /* Aura Indigo */
+    --secondary-foreground: 0 0% 100%; /* White */
+    --muted: 87 36% 65%; /* Dill Green */
+    --muted-foreground: 0 0% 43%; /* #6D6D6D - Subtle Gray (Ensure contrast on Dill Green) */
+    --accent: 48 87% 73%; /* Butter Yellow */
+    --accent-foreground: 237 28% 48%; /* Aura Indigo (Text on Butter Yellow) */
+    --destructive: 0 100% 66%; /* #FF5252 - Keep bright red for errors */
     --destructive-foreground: 0 0% 100%; /* White */
-    --border: 0 0% 89.8%; /* Light border */
-    --input: 0 0% 89.8%; /* Light input bg */
-    --ring: 197 100% 47%; /* Electric Blue for focus rings */
-    --chart-1: 197 100% 47%; /* Primary */
-    --chart-2: 157 58% 53%; /* Accent */
-    --chart-3: 210 40% 50%; /* Muted Blue */
-    --chart-4: 30 90% 60%; /* Orange */
-    --chart-5: 270 60% 65%; /* Purple */
-    --radius: 1rem; /* 16px base, adjust in tailwind.config for lg/xl */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 197 100% 47%; /* Updated */
-    --sidebar-primary-foreground: 0 0% 100%; /* Updated */
-    --sidebar-accent: 157 58% 53%; /* Updated */
-    --sidebar-accent-foreground: 0 0% 6%; /* Updated */
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 197 100% 47%; /* Updated */
+    --border: 38 43% 80%; /* Lighter Alpine Oat for borders */
+    --input: 38 43% 88%; /* Alpine Oat */
+    --ring: 347 97% 42%; /* Cherry Red for focus rings */
+    --chart-1: 347 97% 42%; /* Cherry Red */
+    --chart-2: 48 87% 73%; /* Butter Yellow */
+    --chart-3: 237 28% 48%; /* Aura Indigo */
+    --chart-4: 87 36% 65%; /* Dill Green */
+    --chart-5: 347 97% 60%; /* Lighter Cherry Red */
+    --radius: 0.5rem; /* 8px base */
+    --sidebar-background: 38 43% 95%; /* Slightly lighter Alpine Oat for sidebar */
+    --sidebar-foreground: 237 28% 48%; /* Aura Indigo */
+    --sidebar-primary: 347 97% 42%; /* Cherry Red */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 48 87% 73%; /* Butter Yellow */
+    --sidebar-accent-foreground: 237 28% 48%; /* Aura Indigo */
+    --sidebar-border: 38 43% 80%; /* Lighter Alpine Oat */
+    --sidebar-ring: 347 97% 42%; /* Cherry Red */
   }
   .dark {
-    --background: 0 0% 6%; /* #0f0f0f */
-    --foreground: 0 0% 100%; /* #FFFFFF */
-    --card: 0 0% 10%; /* #1A1A1A */
-    --card-foreground: 0 0% 100%; /* #FFFFFF */
+    /* Dark Theme (Adapting Gen Z Palette) */
+    --background: 0 0% 6%; /* #0f0f0f (Deep Black) */
+    --foreground: 38 43% 88%; /* Alpine Oat (for body text) */
+    --card: 0 0% 10%; /* #1A1A1A (Very Dark Gray) */
+    --card-foreground: 38 43% 88%; /* Alpine Oat */
     --popover: 0 0% 10%; /* #1A1A1A */
-    --popover-foreground: 0 0% 100%; /* #FFFFFF */
-    --primary: 197 100% 47%; /* #00AEEF */
+    --popover-foreground: 38 43% 88%; /* Alpine Oat */
+    --primary: 347 97% 50%; /* Slightly brighter Cherry Red for dark mode */
     --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 0 0% 13%; /* #212121 - Darker Gray */
-    --secondary-foreground: 0 0% 90%; /* Light Gray */
-    --muted: 0 0% 15%; /* #262626 - For muted backgrounds like toasts */
-    --muted-foreground: 0 0% 69%; /* #B0B0B0 - Body Text */
-    --accent: 157 58% 53%; /* #3FCF8E - Lime Green */
-    --accent-foreground: 0 0% 6%; /* Dark text for green bg */
-    --destructive: 0 100% 66%; /* #FF5252 */
+    --secondary: 237 28% 65%; /* Lighter Aura Indigo for dark mode */
+    --secondary-foreground: 0 0% 100%; /* White */
+    --muted: 87 36% 45%; /* Darker Dill Green */
+    --muted-foreground: 0 0% 69%; /* #B0B0B0 - Soft Gray */
+    --accent: 48 87% 65%; /* Slightly desaturated Butter Yellow */
+    --accent-foreground: 0 0% 6%; /* Dark text on Butter Yellow */
+    --destructive: 0 100% 66%; /* #FF5252 - Keep bright red */
     --destructive-foreground: 0 0% 100%; /* White */
     --border: 0 0% 20%; /* #333333 - Darker border */
     --input: 0 0% 11.4%; /* #1d1d1d - Input background */
-    --ring: 197 100% 47%; /* Electric Blue for focus rings */
-    --chart-1: 197 100% 47%; /* Primary */
-    --chart-2: 157 58% 53%; /* Accent */
-    --chart-3: 210 60% 65%; /* Lighter Blue */
-    --chart-4: 30 90% 70%; /* Lighter Orange */
-    --chart-5: 270 70% 75%; /* Lighter Purple */
+    --ring: 347 97% 50%; /* Brighter Cherry Red for focus rings */
+    --chart-1: 347 97% 50%; /* Brighter Cherry Red */
+    --chart-2: 48 87% 65%; /* Desaturated Butter Yellow */
+    --chart-3: 237 28% 65%; /* Lighter Aura Indigo */
+    --chart-4: 87 36% 55%; /* Medium Dill Green */
+    --chart-5: 347 97% 70%; /* Even lighter Cherry Red */
     --sidebar-background: 0 0% 10%; /* #1A1A1A */
-    --sidebar-foreground: 0 0% 90%; /* Light Gray */
-    --sidebar-primary: 197 100% 47%; /* Updated */
-    --sidebar-primary-foreground: 0 0% 100%; /* Updated */
-    --sidebar-accent: 157 58% 53%; /* Updated */
-    --sidebar-accent-foreground: 0 0% 6%; /* Updated */
-    --sidebar-border: 0 0% 20%; /* Updated */
-    --sidebar-ring: 197 100% 47%; /* Updated */
+    --sidebar-foreground: 38 43% 88%; /* Alpine Oat */
+    --sidebar-primary: 347 97% 50%; /* Brighter Cherry Red */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 48 87% 65%; /* Desaturated Butter Yellow */
+    --sidebar-accent-foreground: 0 0% 6%; /* Dark text */
+    --sidebar-border: 0 0% 20%; /* Darker border */
+    --sidebar-ring: 347 97% 50%; /* Brighter Cherry Red */
+    /* --radius: 0.5rem; Already defined in light theme */
   }
 }
 
@@ -90,17 +92,24 @@ body {
   }
   h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.2px; /* Heading letter spacing */
-    @apply text-foreground; /* Use foreground for headings in dark mode */
+    @apply text-foreground; /* Use foreground (Aura Indigo Light / White Dark) for headings */
   }
   .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
      @apply text-white; /* Explicit white for headings in dark mode */
   }
   p, li, span, div:not(h1, h2, h3, h4, h5, h6) { /* Target general text elements */
-     @apply text-muted-foreground; /* Use muted-foreground for body in dark mode */
+     /* Light Mode: Use foreground (Aura Indigo) by default */
+     /* Dark Mode: Use Alpine Oat (--foreground) */
+     @apply text-foreground dark:text-foreground;
   }
-  .dark p, .dark li, .dark span, .dark div:not(h1, h2, h3, h4, h5, h6) {
-     @apply text-muted-foreground; /* Use #B0B0B0 for body text in dark mode */
-  }
+   /* Muted text (use sparingly) */
+   .text-muted-foreground {
+       @apply text-[hsl(var(--muted-foreground))]; /* Use the specific subtle gray */
+   }
+   .dark .text-muted-foreground {
+        @apply text-[hsl(var(--muted-foreground))]; /* Use #B0B0B0 in dark mode */
+   }
+
 
    /* Container */
   .container {
@@ -133,6 +142,7 @@ body {
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px); /* Safari support */
       border: 1px solid hsl(var(--border) / 0.2); /* Subtle border */
+      @apply rounded-xl; /* Ensure consistent border radius */
    }
 
    /* Input Field Styling */
@@ -142,7 +152,7 @@ body {
   input[type="password"],
   textarea,
   select {
-    @apply rounded-[12px] border border-input bg-input px-3 py-2; /* Use theme colors */
+    @apply rounded-md border border-input bg-input px-3 py-2 text-sm; /* Use theme colors, changed to rounded-md (12px) */
     @apply dark:bg-input dark:border-border; /* Explicit dark mode styles */
   }
 

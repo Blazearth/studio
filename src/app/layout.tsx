@@ -1,15 +1,23 @@
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google'; // Import Inter font
+import { Poppins, Roboto } from 'next/font/google'; // Import Poppins and Roboto fonts
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster'; // Import Toaster
 import { Header } from '@/components/layout/header'; // Import Header
 import { Footer } from '@/components/layout/footer'; // Import Footer
 
-// Configure Inter font
-const inter = Inter({
+// Configure Poppins for headings
+const poppins = Poppins({
   subsets: ['latin'],
-  variable: '--font-inter', // CSS variable for Inter
+  weight: ['600', '700'], // Weights for headings
+  variable: '--font-poppins', // CSS variable for Poppins
+});
+
+// Configure Roboto for body text
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['400', '500'], // Weights for body text
+  variable: '--font-roboto', // CSS variable for Roboto
 });
 
 
@@ -24,10 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // Apply Inter font variable and default to dark mode
-    <html lang="en" className={`${inter.variable} dark`}>
-      {/* Apply fade-in animation and font-sans */}
-      <body className={`antialiased font-sans flex flex-col min-h-screen animate-fade-in`}>
+    // Apply Poppins and Roboto font variables and default to dark mode
+    <html lang="en" className={`${poppins.variable} ${roboto.variable} dark`}>
+      {/* Apply fade-in animation and default to roboto font for body */}
+      <body className={`antialiased font-[--font-roboto] flex flex-col min-h-screen animate-fade-in`}>
         <Header /> {/* Add Header component */}
         <main className="flex-1"> {/* Added flex-1 to main content area */}
           {children}

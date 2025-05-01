@@ -73,7 +73,7 @@ export default function FeedbackPage() {
     <div className="container mx-auto px-4 py-12 flex justify-center"> {/* Changed main to div, added container/padding */}
         <Card className="w-full max-w-lg shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl">Contact Us</CardTitle> {/* Updated Title */}
+            <CardTitle className="text-2xl font-heading">Contact Us</CardTitle> {/* Updated Title, Added font-heading */}
             <CardDescription>Have questions or feedback? Send us a message.</CardDescription> {/* Updated Description */}
           </CardHeader>
           <CardContent>
@@ -110,7 +110,7 @@ export default function FeedbackPage() {
                       key={star}
                       className={`h-8 w-8 cursor-pointer transition-colors ${
                         (hoverRating || rating) >= star
-                          ? 'text-yellow-400 fill-yellow-400'
+                          ? 'text-yellow-400 fill-yellow-400' // Use Butter Yellow accent maybe?
                           : 'text-muted-foreground'
                       }`}
                       onClick={() => setRating(star)}

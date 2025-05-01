@@ -89,7 +89,7 @@ export default function AdminDashboardPage() {
     <div className="container mx-auto px-4 py-12"> {/* Changed main to div, added container/padding */}
        {/* Back to Home Link is removed as Admin is now in header nav */}
 
-        <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-8 font-heading">Admin Dashboard</h1> {/* Added font-heading */}
 
          <Tabs defaultValue="completions" className="w-full">
            {/* Updated TabsList to include Leaderboard */}
@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
                               {fb.rating ? (
                                <div className="flex items-center">
                                   {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={`h-4 w-4 ${i < fb.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground/50'}`} />
+                                    <Star key={i} className={`h-4 w-4 ${i < fb.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground/50'}`} /> // Use accent color (Butter Yellow)
                                   ))}
                                    <span className="ml-2 text-xs text-muted-foreground">({fb.rating}/5)</span>
                                </div>
@@ -237,7 +237,7 @@ export default function AdminDashboardPage() {
                                          <TableRow key={entry.userId}>
                                              <TableCell className="font-medium">{index + 1}</TableCell>
                                              <TableCell>{entry.userId}</TableCell>
-                                             <TableCell className={`text-right font-semibold ${entry.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                             <TableCell className={`text-right font-semibold ${entry.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}> {/* Consider using Dill Green */}
                                                   {formatCurrency(entry.pnl)}
                                              </TableCell>
                                               {/* <TableCell className="text-right">

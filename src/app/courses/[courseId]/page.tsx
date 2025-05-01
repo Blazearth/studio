@@ -12,8 +12,8 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     description: 'Learn the fundamentals of the stock market, how it works, and basic investment concepts. Perfect for beginners!',
     longDescription: 'This comprehensive introductory course covers the essential concepts you need to understand the stock market. We\'ll explore topics like what stocks are, how exchanges work, different types of orders, market indices, basic analysis techniques, and the risks involved. By the end of this course, you\'ll have a solid foundation to start your investment learning journey.',
     videoId: 'YSgk5_WXDfE', // Example YouTube Video ID (replace with actual)
-    imageUrl: 'https://picsum.photos/800/400?random=1',
-    imageHint: 'stock market analysis chart finance', // Updated hint
+    imageUrl: 'https://picsum.photos/800/400?random=11',
+    imageHint: 'stock market analysis chart finance laptop screen', // Updated hint
     isFree: true,
   },
    'options-trading-basics': {
@@ -21,8 +21,8 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     description: 'Understand call and put options, basic strategies like covered calls, and the risks involved in options trading.',
     longDescription: 'Dive into the world of options trading. This course explains the core concepts of call and put options, introduces common terminology (strike price, expiry, premium), explores basic strategies like buying calls/puts and covered calls, and highlights the significant risks associated with options.',
     videoId: 'sdMfLkg3MgQ', // Example YouTube Video ID for Options
-    imageUrl: 'https://picsum.photos/800/400?random=2',
-    imageHint: 'options trading strategy analysis', // Updated hint
+    imageUrl: 'https://picsum.photos/800/400?random=12',
+    imageHint: 'options trading strategy analysis data screen', // Updated hint
     isFree: false,
   },
   'technical-analysis-101': {
@@ -30,8 +30,8 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     description: 'Get started with reading stock charts, identifying trends, support/resistance levels, and common indicators.',
     longDescription: 'Learn the basics of technical analysis to help you make trading decisions. This course covers how to read candlestick charts, identify uptrends and downtrends, understand support and resistance levels, and introduces popular indicators like Moving Averages and RSI.',
     videoId: 'eynxyoKgpng', // Example YouTube Video ID for Technical Analysis
-    imageUrl: 'https://picsum.photos/800/400?random=3',
-    imageHint: 'technical analysis stock chart patterns finance', // Updated hint
+    imageUrl: 'https://picsum.photos/800/400?random=13',
+    imageHint: 'technical analysis stock chart patterns finance screen graph', // Updated hint
     isFree: true,
   },
   'fundamental-analysis-guide': {
@@ -39,8 +39,8 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     description: 'Learn how to evaluate a company\'s financial health by analyzing balance sheets, income statements, and cash flow.',
     longDescription: 'Discover how to assess the intrinsic value of a stock through fundamental analysis. This guide explains how to read and interpret key financial statements like the balance sheet, income statement, and cash flow statement. Learn about important financial ratios and metrics used to evaluate a company\'s performance and value.',
     videoId: 'DvpaF3g_798', // Example YouTube Video ID for Fundamental Analysis
-    imageUrl: 'https://picsum.photos/800/400?random=4',
-    imageHint: 'financial statements analysis report stocks', // Updated hint
+    imageUrl: 'https://picsum.photos/800/400?random=14',
+    imageHint: 'financial statements analysis report stocks document paper', // Updated hint
     isFree: false,
   },
   // Added Courses
@@ -49,8 +49,8 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     description: 'Learn essential techniques to manage risk in your stock market investments, including stop-loss orders and diversification.',
     longDescription: 'Master the art of protecting your capital in the stock market. This course delves into crucial risk management techniques, explaining concepts like setting stop-loss orders, position sizing, portfolio diversification across different asset classes and sectors, and understanding risk tolerance. Equip yourself with the tools to invest more confidently.',
     videoId: 'qfmjEv8k72w', // Example YouTube Video ID for Risk Management
-    imageUrl: 'https://picsum.photos/800/400?random=5',
-    imageHint: 'investment risk management diversification finance', // Updated hint
+    imageUrl: 'https://picsum.photos/800/400?random=15',
+    imageHint: 'investment risk management diversification finance chess game', // Updated hint
     isFree: true,
   },
   'behavioral-finance-intro': {
@@ -58,8 +58,8 @@ const coursesData: { [key: string]: { title: string; description: string; longDe
     description: 'Understand how psychological biases can affect investment decisions and learn strategies to overcome them.',
     longDescription: 'Explore the fascinating intersection of psychology and finance. This introductory course explains common behavioral biases (like confirmation bias, loss aversion, herd mentality) that influence investor behavior. Learn to recognize these biases in yourself and others, and discover practical strategies to make more rational investment decisions.',
     videoId: 'F8sPQEV3kG8', // Example YouTube Video ID for Behavioral Finance
-    imageUrl: 'https://picsum.photos/800/400?random=6',
-    imageHint: 'behavioral finance psychology decision making investment', // Updated hint
+    imageUrl: 'https://picsum.photos/800/400?random=16',
+    imageHint: 'behavioral finance psychology decision making investment brain diagram', // Updated hint
     isFree: false,
   },
 };
@@ -90,7 +90,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
   if (!course) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-var(--header-height)-var(--footer-height))] text-center container mx-auto px-4 py-12"> {/* Adjusted height and padding */}
-        <h1 className="text-2xl font-bold mb-4">Course Not Found</h1>
+        <h1 className="text-2xl font-bold mb-4 font-heading">Course Not Found</h1> {/* Added font-heading */}
         <p className="text-muted-foreground mb-8">The course you are looking for does not exist.</p>
         <Link href="/courses" passHref>
           <Button variant="outline">
@@ -137,21 +137,21 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                     )}
                 </div>
               <CardHeader>
-                <CardTitle className="text-3xl md:text-4xl font-bold">{course.title}</CardTitle>
+                <CardTitle className="text-3xl md:text-4xl font-bold font-heading">{course.title}</CardTitle> {/* Added font-heading */}
                  <CardDescription className="text-lg">{course.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <h3 className="text-xl font-semibold mb-2">Course Content</h3>
+                <h3 className="text-xl font-semibold mb-2 font-heading">Course Content</h3> {/* Added font-heading */}
                 <p className="text-muted-foreground mb-6">{course.longDescription}</p>
 
                 {videoDetails && (
                   <div className="mb-6 p-4 border rounded-lg bg-secondary/50">
-                    <h4 className="font-medium mb-1">Course Video:</h4>
+                    <h4 className="font-medium mb-1 font-heading">Course Video:</h4> {/* Added font-heading */}
                     <p className="text-sm text-muted-foreground">{videoDetails.title}</p>
                   </div>
                 )}
 
-                 <h3 className="text-xl font-semibold mb-2">Assessment</h3>
+                 <h3 className="text-xl font-semibold mb-2 font-heading">Assessment</h3> {/* Added font-heading */}
                  <p className="text-muted-foreground">
                     After watching the video, you'll take a short quiz to test your understanding.
                  </p>

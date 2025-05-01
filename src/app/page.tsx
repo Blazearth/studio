@@ -15,7 +15,7 @@ export default function Home() {
       <section className="container mx-auto px-4 py-12 md:py-24"> {/* Changed main to section */}
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-primary">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-primary font-heading"> {/* Added font-heading */}
               Welcome to StocKaro!
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
@@ -38,19 +38,19 @@ export default function Home() {
           </div>
           <div className="hidden md:block">
              <Image
-                src="https://picsum.photos/600/400"
+                src="https://picsum.photos/600/400?random=10"
                 alt="Stock Market Learning Illustration"
                 width={600}
                 height={400}
                 className="rounded-lg shadow-xl"
-                data-ai-hint="stock market education finance graph" // Updated hint
+                data-ai-hint="stock market education finance graph laptop" // Updated hint
               />
           </div>
         </div>
 
         {/* Optional: Feature Highlights Section */}
         <section className="mt-24 md:mt-32">
-          <h2 className="text-3xl font-bold text-center mb-12">Why StocKaro?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 font-heading">Why StocKaro?</h2> {/* Added font-heading */}
           <div className="grid md:grid-cols-3 gap-8">
             <Card>
               <CardHeader>

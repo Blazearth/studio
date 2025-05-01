@@ -69,7 +69,7 @@ export default function CertificatePage({ params }: { params: Promise<{ courseId
         <Card className="w-full max-w-3xl shadow-xl">
           <CardHeader className="text-center pb-4"> {/* Reduced bottom padding */}
             <Award className="h-16 w-16 mx-auto text-accent mb-4" />
-            <CardTitle className="text-3xl font-bold">Certificate of Completion</CardTitle>
+            <CardTitle className="text-3xl font-bold font-heading">Certificate of Completion</CardTitle> {/* Added font-heading */}
             <CardDescription>Congratulations on completing the {courseTitle} course!</CardDescription> {/* Added course title */}
           </CardHeader>
           <CardContent>
@@ -95,16 +95,16 @@ export default function CertificatePage({ params }: { params: Promise<{ courseId
             ) : (
                <div ref={certificateRef} className="border-4 border-primary p-6 md:p-8 rounded-lg bg-white text-center relative aspect-[1.414/1] max-w-full mx-auto overflow-hidden shadow-inner"> {/* A4-ish Aspect Ratio, adjusted padding */}
                  {/* Simple background pattern */}
-                 <div className="absolute inset-0 opacity-[0.03] bg-repeat bg-center" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%233498db\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M50 40v-8h-4v8h-8v4h8v8h4v-8h8v-4h-8zm0-40V0h-4v8h-8v4h8v8h4V12h8V8h-8zM10 40v-8H6v8H0v4h6v8h4v-8h8v-4H10zM10 8V0H6v8H0v4h6v8h4V12h8V8H10z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'}}></div>
+                 <div className="absolute inset-0 opacity-[0.03] bg-repeat bg-center" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23D2042D\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M50 40v-8h-4v8h-8v4h8v8h4v-8h8v-4h-8zm0-40V0h-4v8h-8v4h8v8h4V12h8V8h-8zM10 40v-8H6v8H0v4h6v8h4v-8h8v-4H10zM10 8V0H6v8H0v4h6v8h4V12h8V8H10z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'}}></div> {/* Changed color to Cherry Red */}
 
                  <div className="relative z-10 flex flex-col justify-between h-full">
                    <div>
                       <p className="text-xs sm:text-sm uppercase tracking-widest text-muted-foreground mb-1 sm:mb-2">Certificate of Completion</p>
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 sm:mb-4">StocKaro</h2>
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 sm:mb-4 font-heading">StocKaro</h2> {/* Added font-heading */}
                       <p className="text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6">Proudly Presented To</p>
-                      <p className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 sm:mb-8 text-ellipsis overflow-hidden whitespace-nowrap px-4">{name}</p>
+                      <p className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 sm:mb-8 text-ellipsis overflow-hidden whitespace-nowrap px-4 font-heading">{name}</p> {/* Added font-heading */}
                       <p className="text-base sm:text-lg text-muted-foreground mb-1 sm:mb-2">For Successfully Completing</p>
-                      <p className="text-lg sm:text-xl font-medium mb-6 sm:mb-8">{courseTitle}</p>
+                      <p className="text-lg sm:text-xl font-medium mb-6 sm:mb-8 font-heading">{courseTitle}</p> {/* Added font-heading */}
                    </div>
                     <div className="flex justify-between items-center text-xs sm:text-sm text-muted-foreground mt-auto pt-4 border-t border-dashed">
                        <span>Date: {currentDate}</span>
