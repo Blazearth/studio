@@ -6,15 +6,14 @@ if (!admin.apps.length) {
   try {
     admin.initializeApp({
       // If running locally with Application Default Credentials (ADC) set up (gcloud auth application-default login),
-      // you might not need explicit credentials.
-      // credential: admin.credential.applicationDefault(),
+      // or in a managed environment like Cloud Run/Functions/Workstations where the service account has permissions,
+      // use applicationDefault().
+      credential: admin.credential.applicationDefault(),
 
-      // If using a service account key file (less recommended for Cloud Run/Functions):
-      // credential: admin.credential.cert(require('/path/to/your/serviceAccountKey.json')),
-
-      // For IDX/Cloud Workstations or environments where ADC is configured,
-      // often no explicit credential setup is needed here. Firebase Admin SDK
-      // automatically detects the credentials.
+      // If using a service account key file via environment variable (less common for managed envs):
+      // Ensure GOOGLE_APPLICATION_CREDENTIALS env var is set to the path of your key file.
+      // If GOOGLE_APPLICATION_CREDENTIALS is set, initializeApp() might pick it up automatically
+      // without needing the credential line above.
 
       // Optionally, specify the database URL if needed, though often inferred.
       // databaseURL: "https://<YOUR_PROJECT_ID>.firebaseio.com",
@@ -24,7 +23,7 @@ if (!admin.apps.length) {
     console.error('Firebase Admin SDK initialization error:', error.stack);
     // Decide how to handle initialization failure - maybe throw an error
     // or log and proceed cautiously depending on your app's needs.
-     throw new Error("Could not initialize Firebase Admin SDK.");
+     throw new Error(`Could not initialize Firebase Admin SDK. Error: ${error.message}`); // Include original error message
   }
 } else {
     // console.log('Firebase Admin SDK already initialized.');
